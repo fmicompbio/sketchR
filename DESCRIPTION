@@ -4,7 +4,7 @@ Title: An R interface for geosketch
 Authors@R:
     person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",
         role = c("aut", "cre"))
-License: MIT
+License: MIT + file LICENSE
 Description: An R interface for the geosketch python package. 
 Imports:
     basilisk,
