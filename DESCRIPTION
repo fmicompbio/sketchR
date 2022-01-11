@@ -1,0 +1,17 @@
+Package: geosketchR
+Version: 0.99.0
+Title: An R interface for geosketch
+Authors@R:
+    person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",
+        role = c("aut", "cre"))
+License: MIT
+Description: An R interface for the geosketch python package. 
+Imports:
+    basilisk,
+    DelayedArray,
+    reticulate
+Suggests:
+    testthat
+RoxygenNote: 7.1.2
+Encoding: UTF-8
+StagedInstall: no
