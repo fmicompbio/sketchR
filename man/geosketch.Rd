@@ -4,7 +4,7 @@
 \alias{geosketch}
 \title{Run geosketch to subsample a matrix}
 \usage{
-geosketch(mat, N)
+geosketch(mat, N, replace = FALSE, one_indexed = TRUE)
 }
 \arguments{
 \item{mat}{m x n matrix. Samples (the dimension along which to subsample)

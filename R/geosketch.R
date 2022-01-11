@@ -42,7 +42,7 @@ getGeosketchNames <- function() {
 #'
 #' @return A numeric vector with indices to retain.
 #'
-geosketch <- function(mat, N) {
+geosketch <- function(mat, N, replace = FALSE, one_indexed = TRUE) {
     N <- as.integer(N)
     idx <- basiliskRun(env = geosketchenv, fun = .run_geosketch,
                        mat = mat, N = N, replace = replace,
