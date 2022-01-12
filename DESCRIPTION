@@ -1,5 +1,5 @@
 Package: geosketchR
-Version: 0.99.0
+Version: 0.1.0
 Title: An R interface for geosketch
 Authors@R:
     person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",
