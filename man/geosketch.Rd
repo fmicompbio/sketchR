@@ -4,7 +4,17 @@
 \alias{geosketch}
 \title{Run geosketch to subsample a matrix}
 \usage{
-geosketch(mat, N, replace = FALSE, one_indexed = TRUE)
+geosketch(
+  mat,
+  N,
+  replace = FALSE,
+  k = "auto",
+  alpha = 0.1,
+  seed = NULL,
+  max_iter = 200,
+  one_indexed = TRUE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{mat}{m x n matrix. Samples (the dimension along which to subsample)
@@ -14,7 +24,25 @@ should be in the rows, features in the columns.}
 
 \item{replace}{Logical scalar, whether to sample with replacement.}
 
+\item{k}{Numeric scalar or \code{"auto"}, specifying the number of covering.
+If \code{k = "auto"} (the default), it is set to \code{sqrt(nrow(mat))}
+for \code{replace = TRUE} and to \code{N} for \code{replace = FALSE}.}
+
+\item{alpha}{Numeric scalar defining the acceptable interval around \code{k}.
+Binary search halts when it obtains between \code{k * (1 - alpha)} and
+\code{k * (1 + alpha)} covering boxes.}
+
+\item{seed}{Numeric scalar or \code{NULL} (default). If not \code{NULL}, it
+will be converted to integer and passed to numpy to seed the random
+number generator.}
+
+\item{max_iter}{Numeric scalar giving the maximum iterations at which to
+terminate binary search in rare cases of non-monotonicity of covering
+boxes.}
+
 \item{one_indexed}{Logical scalar, whether to return one-indexed indices.}
+
+\item{verbose}{Locigal scalar, whether to print logging output while running.}
 }
 \value{
 A numeric vector with indices to retain.
@@ -22,6 +50,11 @@ A numeric vector with indices to retain.
 \description{
 Run geosketch to subsample a matrix
 }
+\examples{
+x <- matrix(rnorm(500), nrow = 100)
+geosketch(mat = x, N = 10, seed = 42)
+
+}
 \author{
-Charlotte Soneson
+Charlotte Soneson, Michael Stadler
 }
