@@ -68,28 +68,20 @@ geosketch <- function(mat, N, replace = FALSE, k = "auto",
     }
     .assertVector(x = mat, type = "matrix")
     .assertScalar(x = replace, type = "logical")
-    if (is.numeric(N)) {
-        N <- as.integer(N)
-    }
-    .assertScalar(x = N, type = "integer",
+    .assertScalar(x = N, type = "numeric",
                   rngIncl = c(1, ifelse(replace, Inf, nrow(mat))))
+    N <- as.integer(N)
     if (!identical(k, "auto")) {
-        if (is.numeric(k)) {
-            k <- as.integer(k)
-        }
-        .assertScalar(x = k, type = "integer", rngIncl = c(1, Inf))
+        .assertScalar(x = k, type = "numeric", rngIncl = c(1, Inf))
+        k <- as.integer(k)
     }
     .assertScalar(x = alpha, type = "numeric", rngIncl = c(0, 1))
     if (!is.null(seed)) {
-        if (is.numeric(seed)) {
-            seed <- as.integer(seed)
-        }
-        .assertScalar(x = seed, type = "integer")
+        .assertScalar(x = seed, type = "numeric")
+        seed <- as.integer(seed)
     }
-    if (is.numeric(max_iter)) {
-        max_iter <- as.integer(max_iter)
-    }
-    .assertScalar(x = max_iter, type = "integer", rngIncl = c(1, Inf))
+    .assertScalar(x = max_iter, type = "numeric", rngIncl = c(1, Inf))
+    max_iter <- as.integer(max_iter)
     .assertScalar(x = one_indexed, type = "logical")
     .assertScalar(x = verbose, type = "logical")
     idx <- basiliskRun(env = geosketchenv, fun = .run_geosketch,

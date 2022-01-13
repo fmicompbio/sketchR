@@ -9,12 +9,12 @@ n <- 10
 expect_error(geosketch(mat = "error"), "of class 'matrix'")
 expect_error(geosketch(mat = xd), '"N" is missing')
 expect_error(geosketch(N = n), '"mat" is missing')
-expect_error(geosketch(mat = xd, N = "error"), "class 'integer'")
+expect_error(geosketch(mat = xd, N = "error"), "class 'numeric'")
 expect_error(geosketch(mat = xd, N = n, replace = "error"), "class 'logical'")
-expect_error(geosketch(mat = xd, N = n, k = "error"), "class 'integer'")
+expect_error(geosketch(mat = xd, N = n, k = "error"), "class 'numeric'")
 expect_error(geosketch(mat = xd, N = n, alpha = "error"), "class 'numeric'")
-expect_error(geosketch(mat = xd, N = n, seed = "error"), "class 'integer'")
-expect_error(geosketch(mat = xd, N = n, max_iter = "error"), "class 'integer'")
+expect_error(geosketch(mat = xd, N = n, seed = "error"), "class 'numeric'")
+expect_error(geosketch(mat = xd, N = n, max_iter = "error"), "class 'numeric'")
 expect_error(geosketch(mat = xd, N = n, one_indexed = "error"), "class 'logical'")
 expect_error(geosketch(mat = xd, N = n, verbose = "error"), "class 'logical'")
 
@@ -51,3 +51,4 @@ expect_identical(id3, c(39, 147, 220, 248, 253, 312, 466, 492, 503, 578, 593,
                         702, 714, 729, 749, 837, 858, 868, 920, 979))
 expect_identical(id4, c(39, 63, 120, 147, 289, 312, 345, 492, 615, 642, 694,
                         714, 737, 754, 832, 841, 920, 933, 936, 979))
+
