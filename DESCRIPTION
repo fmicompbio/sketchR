@@ -1,16 +1,19 @@
 Package: geosketchR
-Version: 0.1.0
+Version: 0.1.1
 Title: An R interface for geosketch
 Authors@R: c(
     person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",
-        role = c("aut", "cre")),
+        role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3833-2169")),
     person("Michael", "Stadler", email = "michael.stadler@fmi.ch",
            role = c("aut"), comment = c(ORCID = "0000-0002-2269-4934")))
 License: MIT + file LICENSE
 Description: An R interface for the geosketch python package. 
 Imports:
     basilisk,
+    Biobase,
     DelayedArray,
+    dplyr,
+    ggplot2,
     reticulate
 Suggests:
     testthat (>= 3.0.0)
