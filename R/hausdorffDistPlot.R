@@ -49,6 +49,7 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
     Nvec <- round(Nvec)
     .assertScalar(x = Nrep, type = "numeric", rngIncl = c(1, Inf))
     .assertScalar(x = q, type = "numeric", rngIncl = c(0, 1))
+    .assertScalar(x = doPlot, type = "logical")
     
     hausd <- do.call(rbind, lapply(Nvec, function(N) {
         do.call(rbind, lapply(seq_len(Nrep), function(i) {
