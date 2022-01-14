@@ -4,11 +4,11 @@ test_that("Hausdorff distance calculation works", {
     all_dists_m1_to_m2 <- sqrt(cbind(diag(m1 %*% t(m1))) %*% rbind(rep(1, 4)) + 
         cbind(rep(1, 5)) %*% rbind(diag(m2 %*% t(m2))) - 2 * m1 %*% t(m2))
     min_dists_m1_to_m2 <- apply(all_dists_m1_to_m2, 1, min)
-    expect_equal(.calcRobustHausdorffDist(full = m1, sketch = m2, q = 0), 
+    expect_equal(.calcRobustDirectedHausdorffDist(full = m1, sketch = m2, q = 0), 
                  max(min_dists_m1_to_m2))
-    expect_equal(.calcRobustHausdorffDist(full = m1, sketch = m2, q = 0.5),
+    expect_equal(.calcRobustDirectedHausdorffDist(full = m1, sketch = m2, q = 0.5),
                  sort(min_dists_m1_to_m2)[3])
-    expect_equal(.calcRobustHausdorffDist(full = m1, sketch = m2, q = 1),
+    expect_equal(.calcRobustDirectedHausdorffDist(full = m1, sketch = m2, q = 1),
                  min(min_dists_m1_to_m2))
 })
 
