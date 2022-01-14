@@ -44,11 +44,11 @@
 #' 
 hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4, 
                               doPlot = TRUE, ...) {
-    .assertVector(mat, type = "matrix")
-    .assertVector(Nvec, type = "numeric", rngIncl = c(1, nrow(mat)))
+    .assertVector(x = mat, type = "matrix")
+    .assertVector(x = Nvec, type = "numeric", rngIncl = c(1, nrow(mat)))
     Nvec <- round(Nvec)
-    .assertScalar(Nrep, type = "numeric", rngIncl = c(1, Inf))
-    .assertScalar(q, type = "numeric", rngIncl = c(0, 1))
+    .assertScalar(x = Nrep, type = "numeric", rngIncl = c(1, Inf))
+    .assertScalar(x = q, type = "numeric", rngIncl = c(0, 1))
     
     hausd <- do.call(rbind, lapply(Nvec, function(N) {
         do.call(rbind, lapply(seq_len(Nrep), function(i) {
