@@ -68,6 +68,7 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
                              se = sd(HausdorffDist)/sqrt(length(HausdorffDist)),
                              low = mean - se,
                              high = mean + se)
+        print(
         ggplot2::ggplot(hausdPlot, ggplot2::aes(x = frac, y = mean)) + 
             ggplot2::geom_ribbon(ggplot2::aes(ymin = low, ymax = high), alpha = 0.2) +
             ggplot2::geom_point() + ggplot2::geom_line() + 
@@ -77,6 +78,7 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
                           y = "Mean +/- SE of Hausdorff distance") + 
             ggplot2::theme(axis.text = ggplot2::element_text(size = 12),
                            axis.title = ggplot2::element_text(size = 14))
+        )
     }
     
     hausd
