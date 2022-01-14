@@ -8,10 +8,10 @@
 #' @param Nvec Numeric vector of sketch sizes.
 #' @param Nrep Numeric scalar indicating the number of sketches to draw 
 #'     for each sketch size.
-#' @param q Numeric scalar in [0,1], indicating the fraction of points to 
-#'     discard when calculating the robust Hausdorff distance. Setting 
-#'     q=0 gives the classical Hausdorff distance. The default is 1e-4, 
-#'     as suggested by Hie et al (2019).
+#' @param q Numeric scalar in [0,1], indicating the fraction of largest 
+#'     minimum distances to discard when calculating the robust Hausdorff 
+#'     distance. Setting q=0 gives the classical Hausdorff distance. 
+#'     The default is 1e-4, as suggested by Hie et al (2019).
 #' @param doPlot Logical scalar, indicating whether or not to generate the 
 #'     plot. 
 #' @param... Additional arguments provided to \code{geosketch}.
@@ -19,6 +19,14 @@
 #' @author Charlotte Soneson
 #' 
 #' @export
+#' 
+#' @references 
+#' Hie et al (2019): Geometric sketching compactly summarizes the
+#' single-cell transcriptomic landscape. Cell Systems 8, 483–493.
+#' 
+#' Huttenlocher et al (1993): Comparing images using the Hausdorff
+#' distance. IEEE Transactions on Pattern Analysis and Machine 
+#' Intelligence 15(9), 850-863.
 #' 
 #' @return 
 #' A \code{data.frame} with three columns: the size of the sketch
@@ -33,17 +41,19 @@
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_point geom_line 
 #'     theme_bw scale_x_continuous labs theme element_text
 #' @importFrom dplyr %>% group_by summarize
+#' 
 hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4, 
                               doPlot = TRUE, ...) {
     .assertVector(mat, type = "matrix")
     .assertVector(Nvec, type = "numeric", rngIncl = c(1, nrow(mat)))
+    Nvec <- round(Nvec)
     .assertScalar(Nrep, type = "numeric", rngIncl = c(1, Inf))
     .assertScalar(q, type = "numeric", rngIncl = c(0, 1))
     
     hausd <- do.call(rbind, lapply(Nvec, function(N) {
         do.call(rbind, lapply(seq_len(Nrep), function(i) {
             idx <- geosketch(mat = mat, N = N, ...)
-            hdd <- .calcRobustHausdorffDist(mat, mat[idx, , drop = FALSE], q = q)
+            hdd <- .calcRobustDirectedHausdorffDist(mat, mat[idx, , drop = FALSE], q = q)
             data.frame(N = N, 
                        frac = N/nrow(mat),
                        HausdorffDist = hdd)
@@ -74,11 +84,25 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
 #' @keywords internal
 #' @noRd
 #' @importFrom Biobase matchpt
-.calcRobustHausdorffDist <- function(full, sketch, q = 1e-4) {
+.calcRobustDirectedHausdorffDist <- function(full, sketch, q = 1e-4) {
+    ## Note that this function only calculates the "directed" 
+    ## Hausdorff distance, from the full data set to the sketch. 
+    ## To get a symmetric Hausdorff distance one would also 
+    ## calculate the distance from the sketch to the full 
+    ## data set; however, this will always be zero since the 
+    ## sketch is a subset of the full data set. Thus, the 
+    ## function should not be used as a general replacement for 
+    ## functions like pracma::hausdorff_dist that calculates the 
+    ## full Hausdorff distance. 
+    
     NN <- nrow(full)
+    
+    ## For each point in the full dataset, find nearest neighbor 
+    ## in the sketch, as well as the distance
     dists <- Biobase::matchpt(full, sketch)
+    
+    ## Find K'th largest value
     K <- ceiling((1 - q) * NN)
     if (K == 0) K <- 1
-    ## Find k'th largest value
     sort(dists$distance, partial = K)[K]
 }

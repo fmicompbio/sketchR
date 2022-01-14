@@ -15,10 +15,10 @@ should be in the rows, features in the columns.}
 \item{Nrep}{Numeric scalar indicating the number of sketches to draw 
 for each sketch size.}
 
-\item{q}{Numeric scalar in [0,1], indicating the fraction of points to 
-discard when calculating the robust Hausdorff distance. Setting 
-q=0 gives the classical Hausdorff distance. The default is 1e-4, 
-as suggested by Hie et al (2019).}
+\item{q}{Numeric scalar in [0,1], indicating the fraction of largest 
+minimum distances to discard when calculating the robust Hausdorff 
+distance. Setting q=0 gives the classical Hausdorff distance. 
+The default is 1e-4, as suggested by Hie et al (2019).}
 
 \item{doPlot}{Logical scalar, indicating whether or not to generate the 
 plot.}
@@ -39,6 +39,14 @@ and the full data set, for varying sketch sizes.
 mat <- matrix(rnorm(1000), nrow = 100)
 hdp <- hausdorffDistPlot(mat, Nvec = c(10, 25, 50))
 
+}
+\references{
+Hie et al (2019): Geometric sketching compactly summarizes the
+single-cell transcriptomic landscape. Cell Systems 8, 483–493.
+
+Huttenlocher et al (1993): Comparing images using the Hausdorff
+distance. IEEE Transactions on Pattern Analysis and Machine 
+Intelligence 15(9), 850-863.
 }
 \author{
 Charlotte Soneson
