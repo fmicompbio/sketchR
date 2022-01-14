@@ -48,12 +48,22 @@ boxes.}
 A numeric vector with indices to retain.
 }
 \description{
-Run geosketch to subsample a matrix
+Perform geometric sketching with the \code{geosketch} python package.
+}
+\details{
+The first time this function is run, it will create a conda environment 
+containing the \code{geosketch} package. 
+This is done via the \code{basilisk} R/Bioconductor package - see the 
+documentation for that package for trouble-shooting.
 }
 \examples{
 x <- matrix(rnorm(500), nrow = 100)
 geosketch(mat = x, N = 10, seed = 42)
 
+}
+\references{
+Hie et al (2019): Geometric sketching compactly summarizes the
+single-cell transcriptomic landscape. Cell Systems 8, 483–493.
 }
 \author{
 Charlotte Soneson, Michael Stadler

@@ -14,6 +14,7 @@ Get names of geosketch functions
 }
 \examples{
 getGeosketchNames()
+
 }
 \author{
 Charlotte Soneson

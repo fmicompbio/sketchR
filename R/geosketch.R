@@ -1,12 +1,3 @@
-#' @importFrom DelayedArray is_sparse
-.make_np_friendly <- function(x) {
-    if (is_sparse(x)) {
-        as(x, "dgCMatrix")
-    } else {
-        as.matrix(x)
-    }
-}
-
 #' Get names of geosketch functions
 #'
 #' @return A list of names of objects exposed in the geosketch module
@@ -14,6 +5,7 @@
 #'
 #' @examples
 #' getGeosketchNames()
+#' 
 #' @export
 #'
 #' @importFrom reticulate import
@@ -29,7 +21,14 @@ getGeosketchNames <- function() {
 }
 
 #' Run geosketch to subsample a matrix
-#'
+#' 
+#' Perform geometric sketching with the \code{geosketch} python package. 
+#' 
+#' The first time this function is run, it will create a conda environment 
+#' containing the \code{geosketch} package. 
+#' This is done via the \code{basilisk} R/Bioconductor package - see the 
+#' documentation for that package for trouble-shooting.
+#' 
 #' @param mat m x n matrix. Samples (the dimension along which to subsample)
 #'     should be in the rows, features in the columns.
 #' @param N Numeric scalar, the number of samples to retain.
@@ -52,6 +51,10 @@ getGeosketchNames <- function() {
 #' @examples
 #' x <- matrix(rnorm(500), nrow = 100)
 #' geosketch(mat = x, N = 10, seed = 42)
+#' 
+#' @references 
+#' Hie et al (2019): Geometric sketching compactly summarizes the
+#' single-cell transcriptomic landscape. Cell Systems 8, 483–493.
 #' 
 #' @author Charlotte Soneson, Michael Stadler
 #'
@@ -95,7 +98,6 @@ geosketch <- function(mat, N, replace = FALSE, k = "auto",
 .run_geosketch <- function(mat, N, replace, k, alpha, seed, max_iter,
                            one_indexed, verbose) {
     gsk <- import("geosketch")
-    # mat <- .make_np_friendly(mat) # currently not supporting sparse mat
     sketch_index <- gsk$gs(X = mat, N = N, k = k, seed = seed,
                            replace = replace, alpha = alpha,
                            max_iter = max_iter, one_indexed = one_indexed,
