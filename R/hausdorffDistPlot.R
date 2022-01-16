@@ -29,7 +29,7 @@
 #' Intelligence 15(9), 850-863.
 #' 
 #' @return 
-#' A \code{data.frame} with three columns: the size of the sketch
+#' Invisibly, a \code{data.frame} with three columns: the size of the sketch
 #' as the number of samples (N), the size of the sketch as a fraction 
 #' of the original data set (frac), and the robust Hausdorff distance
 #' (HausdorffDist).
@@ -81,7 +81,7 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
         )
     }
     
-    hausd
+    invisible(hausd)
 }
 
 #' @keywords internal
