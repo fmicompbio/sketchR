@@ -1,5 +1,5 @@
 Package: geosketchR
-Version: 0.1.1
+Version: 0.1.2
 Title: An R interface for geosketch
 Authors@R: c(
     person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",
@@ -15,10 +15,26 @@ Imports:
     dplyr,
     ggplot2,
     methods,
-    reticulate
+    reticulate,
+    rlang,
+    scales,
+    stats
 Suggests:
-    testthat (>= 3.0.0)
+    rmarkdown,
+    knitr,
+    testthat (>= 3.0.0),
+    TENxPBMCData,
+    scuttle,
+    scran,
+    scater,
+    SingleR,
+    celldex,
+    cowplot,
+    SummarizedExperiment,
+    BiocStyle,
+    BiocManager
 RoxygenNote: 7.1.2
 Encoding: UTF-8
 StagedInstall: no
 Config/testthat/edition: 3
+VignetteBuilder: knitr

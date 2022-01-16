@@ -1,0 +1,148 @@
+---
+title: "geosketchR"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+vignette: >
+    %\VignetteIndexEntry{geosketchR}
+    %\VignetteEncoding{UTF-8}
+    %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+    chunk_output_type: console
+bibliography:
+    bibliography.bib
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE,
+  crop = NULL
+)
+library(BiocStyle)
+```
+
+## Introduction
+
+This vignette showcases the main functionalities of the `geosketchR` package, 
+and illustrates how it can be used to generate a subsample of a dataset using 
+the geometric sketching algorithm and implementation proposed by @Hie2019-geosketch, as 
+well as create a set of diagnostic plots. 
+
+## Preparation
+
+We start by loading the required packages and preparing an example data set. 
+
+```{r setup}
+suppressPackageStartupMessages({
+    library(geosketchR)
+    library(TENxPBMCData)
+    library(scuttle)
+    library(scran)
+    library(scater)
+    library(SingleR)
+    library(celldex)
+    library(cowplot)
+    library(SummarizedExperiment)
+})
+```
+
+We will use the PBMC3k data set from the `r Biocpkg("TENxPBMCData")` 
+Bioconductor package for illustration. The chunk below prepares the data set
+by calculating log-transformed normalized counts, finding highly variable 
+genes, performing dimensionality reduction and predicting cell type labels 
+using the `r Biocpkg("SingleR")` package.
+
+```{r}
+## Load data
+pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+
+## Set row and column names
+colnames(pbmc3k) <- paste0("Cell", seq_len(ncol(pbmc3k)))
+rownames(pbmc3k) <- scuttle::uniquifyFeatureNames(
+    ID = rowData(pbmc3k)$ENSEMBL_ID,
+    names = rowData(pbmc3k)$Symbol_TENx
+)
+
+## Normalize and log-transform counts
+pbmc3k <- scuttle::logNormCounts(pbmc3k)
+
+## Find highly variable genes
+dec <- scran::modelGeneVar(pbmc3k)
+top.hvgs <- scran::getTopHVGs(dec, n = 2000)
+
+## Perform dimensionality reduction
+set.seed(100)
+pbmc3k <- scater::runPCA(pbmc3k, subset_row = top.hvgs)
+pbmc3k <- scater::runTSNE(pbmc3k, dimred = "PCA")
+
+## Predict cell type labels
+ref_monaco <- MonacoImmuneData()
+pred_monaco_main <- SingleR(test = pbmc3k, ref = ref_monaco, labels = ref_monaco$label.main)
+pbmc3k$labels_main <- pred_monaco_main$labels
+
+dim(pbmc3k)
+```
+
+## Geometric sketching
+
+The `geosketch()` function performs geometric sketching by calling the 
+`geosketch` [python package](https://github.com/brianhie/geosketch). 
+The output is a vector of indices that can be used to subset the full 
+dataset. The provided seed will be propagated to the python code to 
+achieve reproducibility. 
+
+```{r}
+idx800 <- geosketch(reducedDim(pbmc3k, "PCA"), N = 800, seed = 123)
+head(idx800)
+length(idx800)
+```
+
+To illustrate the result of the geometric sketching, we plot the tSNE 
+representation of the original data as well as the subset (using the 
+tSNE coordinates derived from the full dataset).
+
+```{r, fig.width = 10}
+cowplot::plot_grid(
+    plotTSNE(pbmc3k, colour_by = "labels_main"),
+    plotTSNE(pbmc3k[, idx800], colour_by = "labels_main")
+)
+```
+
+We can also illustrate the relative abundance of each cell type in the 
+full data and in the subset, respectively. 
+
+```{r, fig.width = 6, fig.height = 6}
+compareCompositionPlot(colData(pbmc3k), idx = idx800, column = "labels_main")
+```
+
+The latter plot can be generalized to compare multiple subsets of different 
+sizes, by providing a named list of indices. 
+
+```{r, fig.width = 6, fig.height = 9}
+idx400 <- geosketch(reducedDim(pbmc3k, "PCA"), N = 400, seed = 123)
+idx2000 <- geosketch(reducedDim(pbmc3k, "PCA"), N = 2000, seed = 123)
+compareCompositionPlot(colData(pbmc3k), 
+                       idx = list(Sketch2000 = idx2000, Sketch800 = idx800, 
+                                  Sketch400 = idx400), column = "labels_main")
+```
+
+## Diagnostic plots
+
+`geosketchR` provides a convenient function to plot the Hausdorff distance 
+between the full dataset and the geometric sketch, for a range of sketch 
+sizes. 
+
+```{r}
+hausdorffDistPlot(mat = reducedDim(pbmc3k, "PCA"), Nvec = c(400, 800, 2000),
+                  Nrep = 5)
+```
+
+
+## Session info
+
+```{r}
+sessionInfo()
+```
+
+## References
