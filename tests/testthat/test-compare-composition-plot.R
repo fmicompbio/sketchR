@@ -5,7 +5,7 @@ test_that("compareCompositionPlot works", {
     idx <- 1:20
     expect_error(compareCompositionPlot(df = "error", idx = idx,
                                         column = "celltype"),
-                 "'column' is not in")
+                 "subscript out of bounds")
     expect_error(compareCompositionPlot(df = df, idx = "error",
                                         column = "celltype"),
                  "of class 'numeric'")
@@ -14,6 +14,8 @@ test_that("compareCompositionPlot works", {
                  "of class 'numeric'")
     expect_error(compareCompositionPlot(df = df, idx = idx, column = 1),
                  "of class 'character'")
+    expect_error(compareCompositionPlot(df = df, idx = idx, column = "missing"),
+                 "must be one of")
     expect_error(compareCompositionPlot(df = df, idx = list(idx, idx),
                                         column = "celltype"),
                  "must not be NULL")

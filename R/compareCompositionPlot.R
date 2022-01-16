@@ -49,10 +49,7 @@ compareCompositionPlot <- function(df, idx, column, showPercentages = TRUE,
     } else {
         .assertVector(x = idx, type = "numeric")
     }
-    .assertScalar(column, type = "character")
-    if (!(column %in% names(df))) {
-        stop("'column' is not in names(df)")
-    }
+    .assertScalar(column, type = "character", validValues = names(df))
     .assertScalar(x = showPercentages, type = "logical")
     .assertScalar(x = fontSizePercentages, type = "numeric")
     .assertScalar(x = doPlot, type = "logical")
