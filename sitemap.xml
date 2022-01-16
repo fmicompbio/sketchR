@@ -10,10 +10,22 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
+    <loc>/articles/geosketchR.html</loc>
+  </url>
+  <url>
+    <loc>/articles/index.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
     <loc>/index.html</loc>
+  </url>
+  <url>
+    <loc>/news/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/compareCompositionPlot.html</loc>
   </url>
   <url>
     <loc>/reference/geosketch.html</loc>
