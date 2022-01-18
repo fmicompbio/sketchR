@@ -89,7 +89,6 @@ compareCompositionPlot <- function(df, idx, column, showPercentages = TRUE,
                       RelFrequency = .data$Frequency/sum(.data$Frequency)) %>%
         dplyr::ungroup()
 
-    NN <- nrow(df)
     gg <- ggplot2::ggplot(dfplot, ggplot2::aes(x = .data[[column]],
                                                y = .data$Frequency,
                              fill = .data[[column]],
