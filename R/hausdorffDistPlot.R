@@ -14,7 +14,19 @@
 #'     The default is 1e-4, as suggested by Hie et al (2019).
 #' @param doPlot Logical scalar, indicating whether or not to generate the
 #'     plot.
-#' @param... Additional arguments provided to \code{geosketch}.
+#' @param seed Numeric scalar or \code{NULL} for initialization of the
+#'     random number generator.
+#' @param methods Character vector, indicating which method(s) to include
+#'     in the plot. Should be a subset of c("geosketch", "scsampler").
+#' @param extraArgs Named list providing extra arguments to the respective
+#'     methods (beyond the matrix and the sketch size). The names of the list
+#'     should be the method names (currently, "geosketch" or "scsampler"),
+#'     and each list element should be a named list of argument values. See
+#'     the examples for an illustration of how to use this argument. Note that
+#'     the \code{seed} argument, if provided to any of the methods,
+#'     will be ignored in favor of the global \code{seed} argument
+#'     (since the former would imply providing the same seed for each
+#'     repeated run of the sketching).
 #'
 #' @author Charlotte Soneson
 #'
@@ -24,48 +36,113 @@
 #' Hie et al (2019): Geometric sketching compactly summarizes the
 #' single-cell transcriptomic landscape. Cell Systems 8, 483–493.
 #'
+#' Song et al (2022): scSampler: fast diversity-preserving subsampling of
+#' large-scale single-cell transcriptomic data.
+#' bioRxiv doi:10.1101/2022.01.15.476407
+#'
 #' Huttenlocher et al (1993): Comparing images using the Hausdorff
 #' distance. IEEE Transactions on Pattern Analysis and Machine
 #' Intelligence 15(9), 850-863.
 #'
-#' @return
-#' Invisibly, a \code{data.frame} with three columns: the size of the sketch
+#' @return Invisibly, a \code{data.frame} with four columns: the subsampling
+#' method (method), the size of the sketch
 #' as the number of samples (N), the size of the sketch as a fraction
 #' of the original data set (frac), and the robust Hausdorff distance
 #' (HausdorffDist).
 #'
 #' @examples
+#' ## Generate example data matrix
 #' mat <- matrix(rnorm(1000), nrow = 100)
+#'
+#' ## Generate diagnostic Hausdorff distance plot
+#' ## (including all available methods)
 #' hdp <- hausdorffDistPlot(mat, Nvec = c(10, 25, 50))
+#'
+#' ## Provide additional arguments for geosketch
+#' hdp <- hausdorffDistPlot(mat, Nvec = c(10, 25, 50), Nrep = 2,
+#'                          extraArgs = list(geosketch = list(max_iter = 100)))
 #'
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_point geom_line
 #'     theme_bw scale_x_continuous labs theme element_text
 #' @importFrom dplyr %>% group_by summarize
+#' @importFrom stats runif
 #'
 hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
-                              doPlot = TRUE, ...) {
+                              doPlot = TRUE, seed = NULL,
+                              methods = c("geosketch", "scsampler"),
+                              extraArgs = list()) {
+    ## --------------------------------------------------------------------- ##
+    ## Check input arguments
+    ## --------------------------------------------------------------------- ##
     .assertVector(x = mat, type = "matrix")
     .assertVector(x = Nvec, type = "numeric", rngIncl = c(1, nrow(mat)))
-    Nvec <- round(Nvec)
+    Nvec <- as.integer(Nvec)
     .assertScalar(x = Nrep, type = "numeric", rngIncl = c(1, Inf))
     .assertScalar(x = q, type = "numeric", rngIncl = c(0, 1))
     .assertScalar(x = doPlot, type = "logical")
+    if (!is.null(seed)) {
+        .assertScalar(x = seed, type = "numeric")
+        seed <- as.integer(seed)
+    }
+    .assertVector(x = methods, type = "character",
+                  validValues = c("geosketch", "scsampler"))
+    .assertVector(x = extraArgs, type = "list")
+    .assertVector(x = names(extraArgs), type = "character",
+                  allowNULL = TRUE, validValues = c("geosketch", "scsampler"))
+    for (nm in names(extraArgs)) {
+        .assertVector(x = extraArgs[[nm]], type = "list")
+    }
 
+    ## --------------------------------------------------------------------- ##
+    ## Remove any extra arguments that are already specified explicitly
+    ## --------------------------------------------------------------------- ##
+    extraArgs <- lapply(extraArgs, function(ea) {
+        ea[!(names(ea) %in% c("mat", "N", "seed"))]
+    })
+
+    ## --------------------------------------------------------------------- ##
+    ## Set the seed to initialize the random number state
+    ## --------------------------------------------------------------------- ##
+    if (!is.null(seed)) {
+        set.seed(seed)
+    }
+
+    ## --------------------------------------------------------------------- ##
+    ## Calculate Hausdorff distances
+    ## --------------------------------------------------------------------- ##
     hausd <- do.call(rbind, lapply(Nvec, function(N) {
         do.call(rbind, lapply(seq_len(Nrep), function(i) {
-            idx <- geosketch(mat = mat, N = N, ...)
-            hdd <- .calcRobustDirectedHausdorffDist(
-                mat, mat[idx, , drop = FALSE], q = q
-            )
-            data.frame(N = N,
-                       frac = N/nrow(mat),
-                       HausdorffDist = hdd)
+            ## For each sketch, draw a new random seed
+            newseed <- as.integer(1e7 * stats::runif(1))
+            do.call(rbind, lapply(methods, function(m) {
+                if (m == "geosketch") {
+                    idx <- do.call(geosketch,
+                                   c(list(mat = mat, N = N, seed = newseed),
+                                     extraArgs[[m]]))
+                } else if (m == "scsampler") {
+                    idx <- do.call(scsampler,
+                                   c(list(mat = mat, N = N, seed = newseed),
+                                     extraArgs[[m]]))
+                }
+                hdd <- .calcRobustDirectedHausdorffDist(
+                    mat, mat[idx, , drop = FALSE], q = q
+                )
+                data.frame(method = m,
+                           N = N,
+                           frac = N/nrow(mat),
+                           HausdorffDist = hdd)
+            }))
         }))
     }))
 
+    ## --------------------------------------------------------------------- ##
+    ## Plot
+    ## --------------------------------------------------------------------- ##
     if (doPlot) {
+        ## For each method and sketch size, calculate mean and SE of the
+        ## Hausdorff distances
         hausdPlot <- hausd %>%
-            dplyr::group_by(.data$frac) %>%
+            dplyr::group_by(.data$method, .data$frac) %>%
             dplyr::summarize(
                 mean = mean(.data$HausdorffDist),
                 se = stats::sd(.data$HausdorffDist) /
@@ -75,11 +152,13 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
             )
         print(
             ggplot2::ggplot(hausdPlot,
-                            ggplot2::aes(x = .data$frac, y = .data$mean)) +
+                            ggplot2::aes(x = .data$frac, y = .data$mean,
+                                         group = .data$method)) +
                 ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$low,
                                                   ymax = .data$high),
                                      alpha = 0.2) +
-                ggplot2::geom_point() + ggplot2::geom_line() +
+                ggplot2::geom_point(aes(color = .data$method)) +
+                ggplot2::geom_line(aes(color = .data$method)) +
                 ggplot2::theme_bw() +
                 ggplot2::scale_x_continuous(labels = scales::percent) +
                 ggplot2::labs(x = "Sketch size (% of full dataset size)",
