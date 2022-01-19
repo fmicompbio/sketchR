@@ -1,4 +1,4 @@
 library(testthat)
-library(geosketchR)
+library(sketchR)
 
-test_check("geosketchR")
+test_check("sketchR")
