@@ -51,10 +51,10 @@ A numeric vector with indices to retain.
 Perform geometric sketching with the \code{geosketch} python package.
 }
 \details{
-The first time this function is run, it will create a conda environment 
-containing the \code{geosketch} package. 
-This is done via the \code{basilisk} R/Bioconductor package - see the 
-documentation for that package for trouble-shooting.
+The first time this function is run, it will create a conda environment
+containing the \code{geosketch} package.
+This is done via the \code{basilisk} R/Bioconductor package - see the
+documentation for that package for troubleshooting.
 }
 \examples{
 x <- matrix(rnorm(500), nrow = 100)

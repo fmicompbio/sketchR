@@ -4,7 +4,8 @@
 #' each cell type) and contrast it with the corresponding composition
 #' of a subset.
 #'
-#' @param df A \code{data.frame} or \code{DFrame} object.
+#' @param df A \code{data.frame}-like object (such that \code{df[[column]]}
+#'     works).
 #' @param idx A numeric vector representing the row indexes of \code{df}
 #'     corresponding to the subset of interest. Can also be a named list
 #'     of index vectors if multiple subsets are of interest.
@@ -39,7 +40,7 @@
 compareCompositionPlot <- function(df, idx, column, showPercentages = TRUE,
                                    fontSizePercentages = 4, doPlot = TRUE) {
     ## --------------------------------------------------------------------- ##
-    ## Check arguments
+    ## Check input arguments
     ## --------------------------------------------------------------------- ##
     if (is.list(idx)) {
         .assertVector(x = names(idx), type = "character", allowNULL = FALSE)

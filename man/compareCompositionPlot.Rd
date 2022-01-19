@@ -14,7 +14,8 @@ compareCompositionPlot(
 )
 }
 \arguments{
-\item{df}{A \code{data.frame} or \code{DFrame} object.}
+\item{df}{A \code{data.frame}-like object (such that \code{df[[column]]}
+works).}
 
 \item{idx}{A numeric vector representing the row indexes of \code{df}
 corresponding to the subset of interest. Can also be a named list
