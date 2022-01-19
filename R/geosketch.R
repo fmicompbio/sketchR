@@ -73,10 +73,10 @@ geosketch <- function(mat, N, replace = FALSE, k = "auto",
         mat <- as.matrix(mat)
     }
     .assertVector(x = mat, type = "matrix")
+    .assertScalar(x = replace, type = "logical")
     .assertScalar(x = N, type = "numeric",
                   rngIncl = c(1, ifelse(replace, Inf, nrow(mat))))
     N <- as.integer(N)
-    .assertScalar(x = replace, type = "logical")
     if (!identical(k, "auto")) {
         .assertScalar(x = k, type = "numeric", rngIncl = c(1, Inf))
         k <- as.integer(k)
