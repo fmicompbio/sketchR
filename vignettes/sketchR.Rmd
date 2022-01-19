@@ -1,9 +1,9 @@
 ---
-title: "geosketchR"
+title: "Subsampling single-cell data sets with sketchR"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
 vignette: >
-    %\VignetteIndexEntry{geosketchR}
+    %\VignetteIndexEntry{sketchR}
     %\VignetteEncoding{UTF-8}
     %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -24,10 +24,11 @@ library(BiocStyle)
 
 ## Introduction
 
-This vignette showcases the main functionalities of the `geosketchR` package, 
+This vignette showcases the main functionalities of the `sketchR` package, 
 and illustrates how it can be used to generate a subsample of a dataset using 
-the geometric sketching algorithm and implementation proposed by @Hie2019-geosketch, as 
-well as create a set of diagnostic plots. 
+the geometric sketching/subsampling algorithms and implementations proposed by 
+@Hie2019-geosketch and @Song2022-scsampler, as well as create a set of 
+diagnostic plots. 
 
 ## Preparation
 
@@ -35,7 +36,7 @@ We start by loading the required packages and preparing an example data set.
 
 ```{r setup}
 suppressPackageStartupMessages({
-    library(geosketchR)
+    library(sketchR)
     library(TENxPBMCData)
     library(scuttle)
     library(scran)
@@ -44,6 +45,7 @@ suppressPackageStartupMessages({
     library(celldex)
     library(cowplot)
     library(SummarizedExperiment)
+    library(SingleCellExperiment)
 })
 ```
 
@@ -55,13 +57,13 @@ using the `r Biocpkg("SingleR")` package.
 
 ```{r}
 ## Load data
-pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+pbmc3k <- TENxPBMCData::TENxPBMCData(dataset = "pbmc3k")
 
 ## Set row and column names
 colnames(pbmc3k) <- paste0("Cell", seq_len(ncol(pbmc3k)))
 rownames(pbmc3k) <- scuttle::uniquifyFeatureNames(
-    ID = rowData(pbmc3k)$ENSEMBL_ID,
-    names = rowData(pbmc3k)$Symbol_TENx
+    ID = SummarizedExperiment::rowData(pbmc3k)$ENSEMBL_ID,
+    names = SummarizedExperiment::rowData(pbmc3k)$Symbol_TENx
 )
 
 ## Normalize and log-transform counts
@@ -77,14 +79,15 @@ pbmc3k <- scater::runPCA(pbmc3k, subset_row = top.hvgs)
 pbmc3k <- scater::runTSNE(pbmc3k, dimred = "PCA")
 
 ## Predict cell type labels
-ref_monaco <- MonacoImmuneData()
-pred_monaco_main <- SingleR(test = pbmc3k, ref = ref_monaco, labels = ref_monaco$label.main)
+ref_monaco <- celldex::MonacoImmuneData()
+pred_monaco_main <- SingleR::SingleR(test = pbmc3k, ref = ref_monaco, 
+                                     labels = ref_monaco$label.main)
 pbmc3k$labels_main <- pred_monaco_main$labels
 
 dim(pbmc3k)
 ```
 
-## Geometric sketching
+## Subsampling
 
 The `geosketch()` function performs geometric sketching by calling the 
 `geosketch` [python package](https://github.com/brianhie/geosketch). 
@@ -93,51 +96,56 @@ dataset. The provided seed will be propagated to the python code to
 achieve reproducibility. 
 
 ```{r}
-idx800 <- geosketch(reducedDim(pbmc3k, "PCA"), N = 800, seed = 123)
-head(idx800)
-length(idx800)
+idx800gs <- geosketch(SingleCellExperiment::reducedDim(pbmc3k, "PCA"), 
+                      N = 800, seed = 123)
+head(idx800gs)
+length(idx800gs)
 ```
 
-To illustrate the result of the geometric sketching, we plot the tSNE 
-representation of the original data as well as the subset (using the 
+Similarly, the `scsampler()` function calls the `scSampler` 
+[python package](https://github.com/SONGDONGYUAN1994/scsampler) to 
+perform subsampling. 
+
+```{r}
+idx800scs <- scsampler(SingleCellExperiment::reducedDim(pbmc3k, "PCA"), 
+                       N = 800, seed = 123)
+head(idx800scs)
+length(idx800scs)
+```
+
+To illustrate the result of the subsampling, we plot the tSNE 
+representation of the original data as well as the two subsets (using the 
 tSNE coordinates derived from the full dataset).
 
-```{r, fig.width = 10}
+```{r, fig.width = 10, fig.height = 8}
 cowplot::plot_grid(
-    plotTSNE(pbmc3k, colour_by = "labels_main"),
-    plotTSNE(pbmc3k[, idx800], colour_by = "labels_main")
+    scater::plotTSNE(pbmc3k, colour_by = "labels_main"),
+    scater::plotTSNE(pbmc3k[, idx800gs], colour_by = "labels_main"),
+    scater::plotTSNE(pbmc3k[, idx800scs], colour_by = "labels_main")
 )
 ```
 
 We can also illustrate the relative abundance of each cell type in the 
-full data and in the subset, respectively. 
+full data and in the subsets, respectively. 
 
-```{r, fig.width = 6, fig.height = 6}
-compareCompositionPlot(colData(pbmc3k), idx = idx800, column = "labels_main")
-```
-
-The latter plot can be generalized to compare multiple subsets of different 
-sizes, by providing a named list of indices. 
-
-```{r, fig.width = 6, fig.height = 9}
-idx400 <- geosketch(reducedDim(pbmc3k, "PCA"), N = 400, seed = 123)
-idx2000 <- geosketch(reducedDim(pbmc3k, "PCA"), N = 2000, seed = 123)
-compareCompositionPlot(colData(pbmc3k), 
-                       idx = list(Sketch2000 = idx2000, Sketch800 = idx800, 
-                                  Sketch400 = idx400), column = "labels_main")
+```{r, fig.width = 6, fig.height = 8}
+compareCompositionPlot(SummarizedExperiment::colData(pbmc3k), 
+                       idx = list(geosketch = idx800gs,
+                                  scSampler = idx800scs), 
+                       column = "labels_main")
 ```
 
 ## Diagnostic plots
 
-`geosketchR` provides a convenient function to plot the Hausdorff distance 
-between the full dataset and the geometric sketch, for a range of sketch 
+`sketchR` provides a convenient function to plot the Hausdorff distance 
+between the full dataset and the subsample, for a range of sketch 
 sizes. 
 
 ```{r}
-hausdorffDistPlot(mat = reducedDim(pbmc3k, "PCA"), Nvec = c(400, 800, 2000),
-                  Nrep = 5)
+hausdorffDistPlot(mat = SingleCellExperiment::reducedDim(pbmc3k, "PCA"), 
+                  Nvec = c(400, 800, 2000), seed = 123, 
+                  Nrep = 3, methods = c("geosketch", "scsampler"))
 ```
-
 
 ## Session info
 
