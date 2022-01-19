@@ -4,7 +4,7 @@ xs <- methods::as(xd, "dgCMatrix")
 n <- 10
 
 ## ------------------------------------------------------------------------- ##
-## Miss-specified arguments
+## Mis-specified arguments
 ## ------------------------------------------------------------------------- ##
 ## geosketch
 expect_error(geosketch(mat = "error"), "of class 'matrix'")
