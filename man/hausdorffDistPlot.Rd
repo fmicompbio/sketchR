@@ -4,7 +4,16 @@
 \alias{hausdorffDistPlot}
 \title{Create diagnostic plot of Hausdorff distances}
 \usage{
-hausdorffDistPlot(mat, Nvec, Nrep = 5, q = 1e-04, doPlot = TRUE, ...)
+hausdorffDistPlot(
+  mat,
+  Nvec,
+  Nrep = 5,
+  q = 1e-04,
+  doPlot = TRUE,
+  seed = NULL,
+  methods = c("geosketch", "scsampler", "uniform"),
+  extraArgs = list()
+)
 }
 \arguments{
 \item{mat}{m x n matrix. Samples (the dimension along which to subsample)
@@ -23,10 +32,27 @@ The default is 1e-4, as suggested by Hie et al (2019).}
 \item{doPlot}{Logical scalar, indicating whether or not to generate the
 plot.}
 
-\item{...}{Additional arguments provided to \code{geosketch}.}
+\item{seed}{Numeric scalar or \code{NULL} for initialization of the
+random number generator.}
+
+\item{methods}{Character vector, indicating which method(s) to include
+in the plot. Should be a subset of c("geosketch", "scsampler",
+"uniform"), where "uniform" randomly samples from input features
+with uniform probabilities.}
+
+\item{extraArgs}{Named list providing extra arguments to the respective
+methods (beyond the matrix and the sketch size). The names of the list
+should be the method names (currently, "geosketch" or "scsampler"),
+and each list element should be a named list of argument values. See
+the examples for an illustration of how to use this argument. Note that
+the \code{seed} argument, if provided to any of the methods,
+will be ignored in favor of the global \code{seed} argument
+(since the former would imply providing the same seed for each
+repeated run of the sketching).}
 }
 \value{
-Invisibly, a \code{data.frame} with three columns: the size of the sketch
+Invisibly, a \code{data.frame} with four columns: the subsampling
+method (method), the size of the sketch
 as the number of samples (N), the size of the sketch as a fraction
 of the original data set (frac), and the robust Hausdorff distance
 (HausdorffDist).
@@ -36,18 +62,30 @@ Create diagnostic plot showing the Hausdorff distance between a sketch
 and the full data set, for varying sketch sizes.
 }
 \examples{
+## Generate example data matrix
 mat <- matrix(rnorm(1000), nrow = 100)
+
+## Generate diagnostic Hausdorff distance plot
+## (including all available methods)
 hdp <- hausdorffDistPlot(mat, Nvec = c(10, 25, 50))
+
+## Provide additional arguments for geosketch
+hdp <- hausdorffDistPlot(mat, Nvec = c(10, 25, 50), Nrep = 2,
+                         extraArgs = list(geosketch = list(max_iter = 100)))
 
 }
 \references{
 Hie et al (2019): Geometric sketching compactly summarizes the
 single-cell transcriptomic landscape. Cell Systems 8, 483–493.
 
+Song et al (2022): scSampler: fast diversity-preserving subsampling of
+large-scale single-cell transcriptomic data.
+bioRxiv doi:10.1101/2022.01.15.476407
+
 Huttenlocher et al (1993): Comparing images using the Hausdorff
 distance. IEEE Transactions on Pattern Analysis and Machine
 Intelligence 15(9), 850-863.
 }
 \author{
-Charlotte Soneson
+Charlotte Soneson, Michael Stadler
 }
