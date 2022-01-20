@@ -11,7 +11,7 @@ hausdorffDistPlot(
   q = 1e-04,
   doPlot = TRUE,
   seed = NULL,
-  methods = c("geosketch", "scsampler"),
+  methods = c("geosketch", "scsampler", "uniform"),
   extraArgs = list()
 )
 }
@@ -36,7 +36,9 @@ plot.}
 random number generator.}
 
 \item{methods}{Character vector, indicating which method(s) to include
-in the plot. Should be a subset of c("geosketch", "scsampler").}
+in the plot. Should be a subset of c("geosketch", "scsampler",
+"uniform"), where "uniform" randomly samples from input features
+with uniform probabilities.}
 
 \item{extraArgs}{Named list providing extra arguments to the respective
 methods (beyond the matrix and the sketch size). The names of the list
@@ -85,5 +87,5 @@ distance. IEEE Transactions on Pattern Analysis and Machine
 Intelligence 15(9), 850-863.
 }
 \author{
-Charlotte Soneson
+Charlotte Soneson, Michael Stadler
 }

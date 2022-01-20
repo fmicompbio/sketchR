@@ -144,7 +144,7 @@ sizes.
 ```{r}
 hausdorffDistPlot(mat = SingleCellExperiment::reducedDim(pbmc3k, "PCA"), 
                   Nvec = c(400, 800, 2000), seed = 123, 
-                  Nrep = 3, methods = c("geosketch", "scsampler"))
+                  Nrep = 3, methods = c("geosketch", "scsampler", "uniform"))
 ```
 
 ## Session info

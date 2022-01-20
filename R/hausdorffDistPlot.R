@@ -17,7 +17,9 @@
 #' @param seed Numeric scalar or \code{NULL} for initialization of the
 #'     random number generator.
 #' @param methods Character vector, indicating which method(s) to include
-#'     in the plot. Should be a subset of c("geosketch", "scsampler").
+#'     in the plot. Should be a subset of c("geosketch", "scsampler",
+#'     "uniform"), where "uniform" randomly samples from input features
+#'     with uniform probabilities.
 #' @param extraArgs Named list providing extra arguments to the respective
 #'     methods (beyond the matrix and the sketch size). The names of the list
 #'     should be the method names (currently, "geosketch" or "scsampler"),
@@ -28,7 +30,7 @@
 #'     (since the former would imply providing the same seed for each
 #'     repeated run of the sketching).
 #'
-#' @author Charlotte Soneson
+#' @author Charlotte Soneson, Michael Stadler
 #'
 #' @export
 #'
@@ -69,7 +71,7 @@
 #'
 hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
                               doPlot = TRUE, seed = NULL,
-                              methods = c("geosketch", "scsampler"),
+                              methods = c("geosketch", "scsampler", "uniform"),
                               extraArgs = list()) {
     ## --------------------------------------------------------------------- ##
     ## Check input arguments
@@ -85,7 +87,7 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
         seed <- as.integer(seed)
     }
     .assertVector(x = methods, type = "character",
-                  validValues = c("geosketch", "scsampler"))
+                  validValues = c("geosketch", "scsampler", "uniform"))
     .assertVector(x = extraArgs, type = "list")
     .assertVector(x = names(extraArgs), type = "character",
                   allowNULL = TRUE, validValues = c("geosketch", "scsampler"))
@@ -123,6 +125,8 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
                     idx <- do.call(scsampler,
                                    c(list(mat = mat, N = N, seed = newseed),
                                      extraArgs[[m]]))
+                } else if (m == "uniform") {
+                    idx <- sample.int(n = nrow(mat), size = N)
                 }
                 hdd <- .calcRobustDirectedHausdorffDist(
                     mat, mat[idx, , drop = FALSE], q = q
@@ -148,7 +152,8 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
                 se = stats::sd(.data$HausdorffDist) /
                     sqrt(length(.data$HausdorffDist)),
                 low = .data$mean - .data$se,
-                high = .data$mean + .data$se
+                high = .data$mean + .data$se,
+                .groups = "keep"
             )
         print(
             ggplot2::ggplot(hausdPlot,
@@ -157,8 +162,8 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
                 ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$low,
                                                   ymax = .data$high),
                                      alpha = 0.2) +
-                ggplot2::geom_point(aes(color = .data$method)) +
-                ggplot2::geom_line(aes(color = .data$method)) +
+                ggplot2::geom_point(ggplot2::aes(color = .data$method)) +
+                ggplot2::geom_line(ggplot2::aes(color = .data$method)) +
                 ggplot2::theme_bw() +
                 ggplot2::scale_x_continuous(labels = scales::percent) +
                 ggplot2::labs(x = "Sketch size (% of full dataset size)",

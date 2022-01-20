@@ -58,7 +58,7 @@ test_that("Hausdorff diagnostic plot works", {
     df1 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1)
     expect_s3_class(df1, "data.frame")
     expect_named(df1, c("method", "N", "frac", "HausdorffDist"))
-    expect_equal(nrow(df1), 8)
+    expect_equal(nrow(df1), 12)
 
     df2 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1)
     expect_equal(df1, df2)
