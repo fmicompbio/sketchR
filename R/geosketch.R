@@ -11,7 +11,7 @@
 #' @importFrom reticulate import
 #' @importFrom basilisk basiliskStart basiliskRun basiliskStop
 getGeosketchNames <- function() {
-    cl <- basiliskStart(geosketchenv)
+    cl <- basiliskStart(universalenv)
     geosketch.names <- basiliskRun(cl, function() {
         X <- reticulate::import("geosketch")
         names(X)
@@ -94,7 +94,7 @@ geosketch <- function(mat, N, replace = FALSE, k = "auto",
     ## --------------------------------------------------------------------- ##
     ## Run geosketch
     ## --------------------------------------------------------------------- ##
-    idx <- basiliskRun(env = geosketchenv, fun = .run_geosketch,
+    idx <- basiliskRun(env = universalenv, fun = .run_geosketch,
                        mat = mat, N = N, replace = replace, k = k,
                        alpha = alpha, seed = seed, max_iter = max_iter,
                        one_indexed = one_indexed, verbose = verbose)

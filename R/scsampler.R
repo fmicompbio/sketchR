@@ -11,7 +11,7 @@
 #' @importFrom reticulate import
 #' @importFrom basilisk basiliskStart basiliskRun basiliskStop
 getScSamplerNames <- function() {
-    cl <- basiliskStart(scsamplerenv)
+    cl <- basiliskStart(universalenv)
     scsampler.names <- basiliskRun(cl, function() {
         X <- reticulate::import("scsampler")
         names(X)
@@ -74,7 +74,7 @@ scsampler <- function(mat, N, random_split = 1, seed = 0) {
     ## --------------------------------------------------------------------- ##
     ## Run scSampler
     ## --------------------------------------------------------------------- ##
-    idx <- basiliskRun(env = scsamplerenv, fun = .run_scsampler,
+    idx <- basiliskRun(env = universalenv, fun = .run_scsampler,
                        mat = mat, n_obs = N, random_state = seed,
                        random_split = random_split)
     idx
