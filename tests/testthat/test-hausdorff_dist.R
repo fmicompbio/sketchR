@@ -63,6 +63,13 @@ test_that("Hausdorff diagnostic plot works", {
     df2 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1)
     expect_equal(df1, df2)
 
+    ## Check that we get reproducible results also if we only use a
+    ## subset of the methods
+    df2b <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1,
+                              methods = c("geosketch", "uniform"))
+    expect_equal(df1[df1$method %in% c("geosketch", "uniform"), ], df2b,
+                 ignore_attr = TRUE)
+
     df3 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 42)
     expect_equal(df1$N, df3$N)
     expect_equal(df1$frac, df3$frac)

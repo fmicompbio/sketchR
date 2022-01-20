@@ -153,7 +153,7 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
                     sqrt(length(.data$HausdorffDist)),
                 low = .data$mean - .data$se,
                 high = .data$mean + .data$se,
-                .groups = "keep"
+                .groups = "drop"
             )
         print(
             ggplot2::ggplot(hausdPlot,
