@@ -53,14 +53,6 @@ test_that("geosketch works", {
     expect_identical(id1, is1)
     expect_identical(id2, is2)
     expect_identical(id5, id6)
-
-    expect_identical(id1, c(49, 253, 353, 364, 486, 615, 651, 729, 737, 754))
-    expect_identical(id2, c(49, 96, 295, 433, 495, 591, 615, 651, 673, 845))
-    expect_identical(id3, c(39, 147, 220, 248, 253, 312, 466, 492, 503, 578, 593,
-                            702, 714, 729, 749, 837, 858, 868, 920, 979))
-    expect_identical(id4, c(39, 63, 120, 147, 289, 312, 345, 492, 615, 642, 694,
-                            714, 737, 754, 832, 841, 920, 933, 936, 979))
-    expect_identical(id5, c(37, 49, 145, 253, 274, 615, 651, 789, 852, 966))
 })
 
 test_that("getGeosketchNames works", {

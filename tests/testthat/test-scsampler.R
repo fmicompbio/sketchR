@@ -49,14 +49,6 @@ test_that("scsampler works", {
     expect_identical(id2, is2)
     expect_identical(id1, id3[seq_len(n)])
     expect_identical(id5, id6)
-
-    expect_identical(id1, c(480, 726, 694, 295, 204, 697, 460, 143, 492, 938))
-    expect_identical(id2, c(656, 615, 915, 14, 800, 442, 633, 841, 262, 527))
-    expect_identical(id3, c(480, 726, 694, 295, 204, 697, 460, 143, 492, 938,
-                            219, 442, 277, 274, 265, 495, 966, 165, 636, 615))
-    expect_identical(id4, c(656, 615, 915, 14, 800, 442, 633, 841, 262, 527,
-                            713, 966, 651, 165, 771, 495, 606, 387, 246, 4))
-    expect_identical(id5, c(348, 295, 966, 492, 345, 274, 651, 694, 533, 726))
 })
 
 test_that("getScSamplerNames works", {
