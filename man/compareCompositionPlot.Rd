@@ -9,8 +9,7 @@ compareCompositionPlot(
   idx,
   column,
   showPercentages = TRUE,
-  fontSizePercentages = 4,
-  doPlot = TRUE
+  fontSizePercentages = 4
 )
 }
 \arguments{
@@ -30,12 +29,9 @@ frequencies of each category should be shown in the plot.}
 
 \item{fontSizePercentages}{Numerical scalar, indicating the font size
 of the relative frequencies, if \code{showPercentages} is \code{TRUE}.}
-
-\item{doPlot}{Logical scalar, indicating whether the plot should be drawn.}
 }
 \value{
-Invisibly, a \code{data.frame} with absolute and relative
-frequencies of each category in each set of observations.
+A \code{ggplot} object.
 }
 \description{
 Plot the composition of a data set (e.g., the number of cells from

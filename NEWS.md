@@ -1,3 +1,7 @@
+# sketchR 0.1.4
+
+* compareCompositionPlot() and hausdorffDistPlot() now return a ggplot object instead of a data.frame
+
 # sketchR 0.1.3
 
 * Rename to sketchR
