@@ -12,8 +12,6 @@
 #'     minimum distances to discard when calculating the robust Hausdorff
 #'     distance. Setting q=0 gives the classical Hausdorff distance.
 #'     The default is 1e-4, as suggested by Hie et al (2019).
-#' @param doPlot Logical scalar, indicating whether or not to generate the
-#'     plot.
 #' @param seed Numeric scalar or \code{NULL} for initialization of the
 #'     random number generator.
 #' @param methods Character vector, indicating which method(s) to include
@@ -46,11 +44,7 @@
 #' distance. IEEE Transactions on Pattern Analysis and Machine
 #' Intelligence 15(9), 850-863.
 #'
-#' @return Invisibly, a \code{data.frame} with four columns: the subsampling
-#' method (method), the size of the sketch
-#' as the number of samples (N), the size of the sketch as a fraction
-#' of the original data set (frac), and the robust Hausdorff distance
-#' (HausdorffDist).
+#' @return A \code{ggplot} object.
 #'
 #' @examples
 #' ## Generate example data matrix
@@ -70,7 +64,7 @@
 #' @importFrom stats runif
 #'
 hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
-                              doPlot = TRUE, seed = NULL,
+                              seed = NULL,
                               methods = c("geosketch", "scsampler", "uniform"),
                               extraArgs = list()) {
     ## --------------------------------------------------------------------- ##
@@ -81,7 +75,6 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
     Nvec <- as.integer(Nvec)
     .assertScalar(x = Nrep, type = "numeric", rngIncl = c(1, Inf))
     .assertScalar(x = q, type = "numeric", rngIncl = c(0, 1))
-    .assertScalar(x = doPlot, type = "logical")
     if (!is.null(seed)) {
         .assertScalar(x = seed, type = "numeric")
         seed <- as.integer(seed)
@@ -142,38 +135,34 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
     ## --------------------------------------------------------------------- ##
     ## Plot
     ## --------------------------------------------------------------------- ##
-    if (doPlot) {
-        ## For each method and sketch size, calculate mean and SE of the
-        ## Hausdorff distances
-        hausdPlot <- hausd %>%
-            dplyr::group_by(.data$method, .data$frac) %>%
-            dplyr::summarize(
-                mean = mean(.data$HausdorffDist),
-                se = stats::sd(.data$HausdorffDist) /
-                    sqrt(length(.data$HausdorffDist)),
-                low = .data$mean - .data$se,
-                high = .data$mean + .data$se,
-                .groups = "drop"
-            )
-        print(
-            ggplot2::ggplot(hausdPlot,
-                            ggplot2::aes(x = .data$frac, y = .data$mean,
-                                         group = .data$method)) +
-                ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$low,
-                                                  ymax = .data$high),
-                                     alpha = 0.2) +
-                ggplot2::geom_point(ggplot2::aes(color = .data$method)) +
-                ggplot2::geom_line(ggplot2::aes(color = .data$method)) +
-                ggplot2::theme_bw() +
-                ggplot2::scale_x_continuous(labels = scales::percent) +
-                ggplot2::labs(x = "Sketch size (% of full dataset size)",
-                              y = "Mean +/- SE of Hausdorff distance") +
-                ggplot2::theme(axis.text = ggplot2::element_text(size = 12),
-                               axis.title = ggplot2::element_text(size = 14))
+    ## For each method and sketch size, calculate mean and SE of the
+    ## Hausdorff distances
+    hausdPlot <- hausd %>%
+        dplyr::group_by(.data$method, .data$frac) %>%
+        dplyr::summarize(
+            mean = mean(.data$HausdorffDist),
+            se = stats::sd(.data$HausdorffDist) /
+                sqrt(length(.data$HausdorffDist)),
+            low = .data$mean - .data$se,
+            high = .data$mean + .data$se,
+            .groups = "drop"
         )
-    }
+    gg <- ggplot2::ggplot(hausdPlot,
+                          ggplot2::aes(x = .data$frac, y = .data$mean,
+                                       group = .data$method)) +
+        ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$low,
+                                          ymax = .data$high),
+                             alpha = 0.2) +
+        ggplot2::geom_point(ggplot2::aes(color = .data$method)) +
+        ggplot2::geom_line(ggplot2::aes(color = .data$method)) +
+        ggplot2::theme_bw() +
+        ggplot2::scale_x_continuous(labels = scales::percent) +
+        ggplot2::labs(x = "Sketch size (% of full dataset size)",
+                      y = "Mean +/- SE of Hausdorff distance") +
+        ggplot2::theme(axis.text = ggplot2::element_text(size = 12),
+                       axis.title = ggplot2::element_text(size = 14))
 
-    invisible(hausd)
+    gg
 }
 
 #' @keywords internal

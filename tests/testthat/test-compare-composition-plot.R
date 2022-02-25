@@ -31,14 +31,10 @@ test_that("compareCompositionPlot works", {
     expect_error(compareCompositionPlot(df = df, idx = idx, column = "celltype",
                                         fontSizePercentages = c(4, 5)),
                  "length 1")
-    expect_error(compareCompositionPlot(df = df, idx = idx, column = "celltype",
-                                        doPlot = "error"),
-                 "of class 'logical'")
-    expect_error(compareCompositionPlot(df = df, idx = idx, column = "celltype",
-                                        doPlot = c(TRUE, FALSE)),
-                 "length 1")
 
     ccp <- compareCompositionPlot(df = df, idx = idx, column = "celltype")
+    expect_s3_class(ccp, "ggplot")
+    ccp <- ccp$data
     expect_equal(ccp$Frequency[ccp$celltype == "A" & ccp$group == "Full dataset"],
                  sum(df$celltype == "A"))
     expect_equal(ccp$Frequency[ccp$celltype == "B" & ccp$group == "Full dataset"],
@@ -60,6 +56,8 @@ test_that("compareCompositionPlot works", {
     ccpl <- compareCompositionPlot(df = df,
                                    idx = list(first = idx, second = idx),
                                    column = "celltype")
+    expect_s3_class(ccpl, "ggplot")
+    ccpl <- ccpl$data
     expect_equal(ccpl$Frequency[ccpl$celltype == "A" & ccpl$group == "first"],
                  ccpl$Frequency[ccpl$celltype == "A" & ccpl$group == "second"])
     expect_equal(ccpl$Frequency[ccpl$celltype == "A" & ccpl$group == "first"],

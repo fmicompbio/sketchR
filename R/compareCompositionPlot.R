@@ -16,10 +16,8 @@
 #'     frequencies of each category should be shown in the plot.
 #' @param fontSizePercentages Numerical scalar, indicating the font size
 #'     of the relative frequencies, if \code{showPercentages} is \code{TRUE}.
-#' @param doPlot Logical scalar, indicating whether the plot should be drawn.
 #'
-#' @return Invisibly, a \code{data.frame} with absolute and relative
-#' frequencies of each category in each set of observations.
+#' @return A \code{ggplot} object.
 #'
 #' @author Charlotte Soneson
 #'
@@ -38,7 +36,7 @@
 #' @importFrom scales percent
 #'
 compareCompositionPlot <- function(df, idx, column, showPercentages = TRUE,
-                                   fontSizePercentages = 4, doPlot = TRUE) {
+                                   fontSizePercentages = 4) {
     ## --------------------------------------------------------------------- ##
     ## Check input arguments
     ## --------------------------------------------------------------------- ##
@@ -53,7 +51,6 @@ compareCompositionPlot <- function(df, idx, column, showPercentages = TRUE,
     .assertScalar(column, type = "character", validValues = names(df))
     .assertScalar(x = showPercentages, type = "logical")
     .assertScalar(x = fontSizePercentages, type = "numeric")
-    .assertScalar(x = doPlot, type = "logical")
 
     ## --------------------------------------------------------------------- ##
     ## Create data.frame for plotting
@@ -113,10 +110,6 @@ compareCompositionPlot <- function(df, idx, column, showPercentages = TRUE,
                 angle = 0, aes(y = .data$ypos))
     }
 
-    if (doPlot) {
-        print(gg)
-    }
-
-    invisible(dfplot %>% dplyr::select(-.data$ypos))
+    gg
 }
 

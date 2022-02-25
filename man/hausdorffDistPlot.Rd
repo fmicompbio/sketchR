@@ -9,7 +9,6 @@ hausdorffDistPlot(
   Nvec,
   Nrep = 5,
   q = 1e-04,
-  doPlot = TRUE,
   seed = NULL,
   methods = c("geosketch", "scsampler", "uniform"),
   extraArgs = list()
@@ -28,9 +27,6 @@ for each sketch size.}
 minimum distances to discard when calculating the robust Hausdorff
 distance. Setting q=0 gives the classical Hausdorff distance.
 The default is 1e-4, as suggested by Hie et al (2019).}
-
-\item{doPlot}{Logical scalar, indicating whether or not to generate the
-plot.}
 
 \item{seed}{Numeric scalar or \code{NULL} for initialization of the
 random number generator.}
@@ -51,11 +47,7 @@ will be ignored in favor of the global \code{seed} argument
 repeated run of the sketching).}
 }
 \value{
-Invisibly, a \code{data.frame} with four columns: the subsampling
-method (method), the size of the sketch
-as the number of samples (N), the size of the sketch as a fraction
-of the original data set (frac), and the robust Hausdorff distance
-(HausdorffDist).
+A \code{ggplot} object.
 }
 \description{
 Create diagnostic plot showing the Hausdorff distance between a sketch
