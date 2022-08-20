@@ -54,13 +54,13 @@ of a subset.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">compareCompositionPlot</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">idx</span>,
-  <span class="va">column</span>,
-  showPercentages <span class="op">=</span> <span class="cn">TRUE</span>,
-  fontSizePercentages <span class="op">=</span> <span class="fl">4</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compareCompositionPlot</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">idx</span>,</span>
+<span>  <span class="va">column</span>,</span>
+<span>  showPercentages <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  fontSizePercentages <span class="op">=</span> <span class="fl">4</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -68,24 +68,35 @@ of a subset.</p>
     <dl><dt>df</dt>
 <dd><p>A <code>data.frame</code>-like object (such that <code>df[[column]]</code>
 works).</p></dd>
+
+
 <dt>idx</dt>
 <dd><p>A numeric vector representing the row indexes of <code>df</code>
 corresponding to the subset of interest. Can also be a named list
 of index vectors if multiple subsets are of interest.</p></dd>
+
+
 <dt>column</dt>
 <dd><p>A character scalar corresponding to a column of
 <code>df</code> and representing the variable for which the composition
 should be calculated.</p></dd>
+
+
 <dt>showPercentages</dt>
 <dd><p>Logical scalar, indicating whether relative
 frequencies of each category should be shown in the plot.</p></dd>
+
+
 <dt>fontSizePercentages</dt>
 <dd><p>Numerical scalar, indicating the font size
 of the relative frequencies, if <code>showPercentages</code> is <code>TRUE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>ggplot</code> object.</p>
+    
+
+<p>A <code>ggplot</code> object.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -94,12 +105,12 @@ of the relative frequencies, if <code>showPercentages</code> is <code>TRUE</code
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>celltype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="fl">1000</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">                                   prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.05</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, <span class="fl">200</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">compareCompositionPlot</span><span class="op">(</span><span class="va">df</span>, <span class="va">idx</span>, <span class="st">"celltype"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>celltype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="fl">1000</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                                   prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.05</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, <span class="fl">200</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">compareCompositionPlot</span><span class="op">(</span><span class="va">df</span>, <span class="va">idx</span>, <span class="st">"celltype"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="compareCompositionPlot-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -114,7 +125,7 @@ of the relative frequencies, if <code>showPercentages</code> is <code>TRUE</code
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

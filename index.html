@@ -63,9 +63,13 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
+<p><img src="reference/figures/sketchR.png" align="right" alt="sketchR" width="150"></p>
+<p><br></p>
 <div class="section level1">
 <div class="page-header"><h1 id="sketchr">sketchR<a class="anchor" aria-label="anchor" href="#sketchr"></a>
 </h1></div>
+<p><br></p>
 <!-- badges: start -->
 <p><code>sketchR</code> provides a simple interface to the <a href="https://github.com/brianhie/geosketch" class="external-link"><code>geosketch</code></a> and <a href="https://github.com/SONGDONGYUAN1994/scsampler" class="external-link"><code>scSampler</code></a> python packages, which implement subsampling algorithms described in <a href="https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30152-8" class="external-link">Hie et al (2019)</a> and <a href="https://www.biorxiv.org/content/10.1101/2022.01.15.476407v1" class="external-link">Song et al (2022)</a>, respectively. The implementation makes use of the <a href="https://bioconductor.org/packages/basilisk/" class="external-link"><code>basilisk</code></a> package for interaction between R and python.</p>
 <div class="section level2">
@@ -73,27 +77,28 @@
 </h2>
 <p>You can install the development version of sketchR from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"csoneson/sketchR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"csoneson/sketchR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sketchR</span><span class="op">)</span>
-
-<span class="co">## Create an example data matrix. Rows represent "samples" (the unit of </span>
-<span class="co">## downsampling), columns represent features (e.g., principal components).</span>
-<span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5000</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
-
-<span class="co">## Run geosketch. The output is a vector of indices, which you can use </span>
-<span class="co">## to subset the rows of the input matrix.</span>
-<span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/geosketch.html">geosketch</a></span><span class="op">(</span><span class="va">mat</span>, N <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-
-<span class="co">## Run scSampler. As for geosketch, the output is a vector of indices.</span>
-<span class="va">idx2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/scsampler.html">scsampler</a></span><span class="op">(</span><span class="va">mat</span>, N <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sketchR</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create an example data matrix. Rows represent "samples" (the unit of </span></span>
+<span><span class="co">## downsampling), columns represent features (e.g., principal components).</span></span>
+<span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5000</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Run geosketch. The output is a vector of indices, which you can use </span></span>
+<span><span class="co">## to subset the rows of the input matrix.</span></span>
+<span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/geosketch.html">geosketch</a></span><span class="op">(</span><span class="va">mat</span>, N <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Run scSampler. As for geosketch, the output is a vector of indices.</span></span>
+<span><span class="va">idx2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/scsampler.html">scsampler</a></span><span class="op">(</span><span class="va">mat</span>, N <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -139,7 +144,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer>
