@@ -1,5 +1,11 @@
+<img src="man/figures/sketchR.png" align="right" alt="sketchR" width="150"/>
+
+<br>
 
 # sketchR
+
+<br>
+
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/csoneson/sketchR/workflows/R-CMD-check/badge.svg)](https://github.com/csoneson/sketchR/actions)
