@@ -1,5 +1,5 @@
 Package: sketchR
-Version: 0.1.4
+Version: 0.1.5
 Title: An R interface for python subsampling/sketching algorithms
 Authors@R: c(
     person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",
@@ -36,7 +36,7 @@ Suggests:
     BiocStyle,
     BiocManager,
     SingleCellExperiment
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Encoding: UTF-8
 StagedInstall: no
 Config/testthat/edition: 3
