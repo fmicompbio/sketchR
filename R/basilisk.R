@@ -11,7 +11,7 @@
 #     envname = "scsampler", pkgname = "sketchR",
 #     packages = c("numpy==1.21.5", "pandas==1.3.5", "scanpy==1.7.2"),
 #     channels = c("bioconda", "conda-forge"),
-#     pip = c("scsampler==1.0.0")
+#     pip = c("scsampler==1.0.2")
 # )
 
 universalenv <- BasiliskEnvironment(
@@ -20,6 +20,6 @@ universalenv <- BasiliskEnvironment(
                  "scikit-learn==1.0.2", "scipy==1.7.3", "threadpoolctl==3.0.0",
                  "pandas==1.3.5", "scanpy==1.7.2"),
     channels = c("bioconda", "conda-forge"),
-    pip = c("fbpca==1.0", "geosketch==1.2", "scsampler==1.0.0")
+    pip = c("fbpca==1.0", "geosketch==1.2", "scsampler==1.0.2")
 )
 

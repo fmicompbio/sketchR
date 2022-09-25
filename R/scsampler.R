@@ -83,8 +83,8 @@ scsampler <- function(mat, N, random_split = 1, seed = 0) {
 # Internal function to run scSampler
 .run_scsampler <- function(mat, n_obs, random_state, random_split) {
     scs <- reticulate::import("scsampler")
-    sketch_index <- scs$scsampler(mat, n_obs = n_obs,
+    sketch_index <- scs$scsampler(mat, n_obs = n_obs, copy = FALSE,
                                   random_state = random_state,
                                   random_split = random_split)
-    as.numeric(unlist(sketch_index[[2]]) + 1)
+    as.numeric(unlist(sketch_index) + 1)
 }
