@@ -59,12 +59,12 @@
 
       
 
-      </header><script src="sketchR_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Subsampling single-cell data sets with sketchR</h1>
             
-            <h4 data-toc-skip class="date">2022-09-25</h4>
+            <h4 data-toc-skip class="date">2022-10-20</h4>
       
       
       <div class="hidden name"><code>sketchR.Rmd</code></div>
@@ -207,7 +207,7 @@
 <span><span class="co">#&gt;  [7] scuttle_1.6.3               TENxPBMCData_1.14.0        </span></span>
 <span><span class="co">#&gt;  [9] HDF5Array_1.24.2            rhdf5_2.40.0               </span></span>
 <span><span class="co">#&gt; [11] DelayedArray_0.22.0         Matrix_1.5-1               </span></span>
-<span><span class="co">#&gt; [13] SingleCellExperiment_1.18.0 SummarizedExperiment_1.26.1</span></span>
+<span><span class="co">#&gt; [13] SingleCellExperiment_1.18.1 SummarizedExperiment_1.26.1</span></span>
 <span><span class="co">#&gt; [15] Biobase_2.56.0              GenomicRanges_1.48.0       </span></span>
 <span><span class="co">#&gt; [17] GenomeInfoDb_1.32.4         IRanges_2.30.1             </span></span>
 <span><span class="co">#&gt; [19] S4Vectors_0.34.0            BiocGenerics_0.42.0        </span></span>
@@ -217,17 +217,17 @@
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] AnnotationHub_3.4.0           BiocFileCache_2.4.0          </span></span>
 <span><span class="co">#&gt;   [3] systemfonts_1.0.4             igraph_1.3.5                 </span></span>
-<span><span class="co">#&gt;   [5] BiocParallel_1.30.3           digest_0.6.29                </span></span>
+<span><span class="co">#&gt;   [5] BiocParallel_1.30.4           digest_0.6.30                </span></span>
 <span><span class="co">#&gt;   [7] htmltools_0.5.3               viridis_0.6.2                </span></span>
 <span><span class="co">#&gt;   [9] fansi_1.0.3                   magrittr_2.0.3               </span></span>
 <span><span class="co">#&gt;  [11] memoise_2.0.1                 ScaledMatrix_1.4.1           </span></span>
-<span><span class="co">#&gt;  [13] cluster_2.1.4                 limma_3.52.3                 </span></span>
+<span><span class="co">#&gt;  [13] cluster_2.1.4                 limma_3.52.4                 </span></span>
 <span><span class="co">#&gt;  [15] Biostrings_2.64.1             pkgdown_2.0.6.9000           </span></span>
 <span><span class="co">#&gt;  [17] colorspace_2.0-3              blob_1.2.3                   </span></span>
 <span><span class="co">#&gt;  [19] rappdirs_0.3.3                ggrepel_0.9.1                </span></span>
-<span><span class="co">#&gt;  [21] textshaping_0.3.6             xfun_0.33                    </span></span>
-<span><span class="co">#&gt;  [23] dplyr_1.0.10                  crayon_1.5.1                 </span></span>
-<span><span class="co">#&gt;  [25] RCurl_1.98-1.8                jsonlite_1.8.0               </span></span>
+<span><span class="co">#&gt;  [21] textshaping_0.3.6             xfun_0.34                    </span></span>
+<span><span class="co">#&gt;  [23] dplyr_1.0.10                  crayon_1.5.2                 </span></span>
+<span><span class="co">#&gt;  [25] RCurl_1.98-1.9                jsonlite_1.8.2               </span></span>
 <span><span class="co">#&gt;  [27] glue_1.6.2                    gtable_0.3.1                 </span></span>
 <span><span class="co">#&gt;  [29] zlibbioc_1.42.0               XVector_0.36.0               </span></span>
 <span><span class="co">#&gt;  [31] BiocSingular_1.12.0           Rhdf5lib_1.18.2              </span></span>
@@ -242,31 +242,31 @@
 <span><span class="co">#&gt;  [49] sass_0.4.2                    dbplyr_2.2.1                 </span></span>
 <span><span class="co">#&gt;  [51] here_1.0.1                    locfit_1.5-9.6               </span></span>
 <span><span class="co">#&gt;  [53] utf8_1.2.2                    labeling_0.4.2               </span></span>
-<span><span class="co">#&gt;  [55] tidyselect_1.1.2              rlang_1.0.6                  </span></span>
+<span><span class="co">#&gt;  [55] tidyselect_1.2.0              rlang_1.0.6                  </span></span>
 <span><span class="co">#&gt;  [57] later_1.3.0                   AnnotationDbi_1.58.0         </span></span>
 <span><span class="co">#&gt;  [59] munsell_0.5.0                 BiocVersion_3.15.2           </span></span>
 <span><span class="co">#&gt;  [61] tools_4.2.1                   cachem_1.0.6                 </span></span>
 <span><span class="co">#&gt;  [63] cli_3.4.1                     generics_0.1.3               </span></span>
-<span><span class="co">#&gt;  [65] RSQLite_2.2.17                ExperimentHub_2.4.0          </span></span>
-<span><span class="co">#&gt;  [67] evaluate_0.16                 stringr_1.4.1                </span></span>
-<span><span class="co">#&gt;  [69] fastmap_1.1.0                 yaml_2.3.5                   </span></span>
-<span><span class="co">#&gt;  [71] ragg_1.2.2                    grDevices_4.2.1              </span></span>
+<span><span class="co">#&gt;  [65] RSQLite_2.2.18                ExperimentHub_2.4.0          </span></span>
+<span><span class="co">#&gt;  [67] evaluate_0.17                 stringr_1.4.1                </span></span>
+<span><span class="co">#&gt;  [69] fastmap_1.1.0                 yaml_2.3.6                   </span></span>
+<span><span class="co">#&gt;  [71] ragg_1.2.3                    grDevices_4.2.1              </span></span>
 <span><span class="co">#&gt;  [73] knitr_1.40                    bit64_4.0.5                  </span></span>
-<span><span class="co">#&gt;  [75] fs_1.5.2                      purrr_0.3.4                  </span></span>
+<span><span class="co">#&gt;  [75] fs_1.5.2                      purrr_0.3.5                  </span></span>
 <span><span class="co">#&gt;  [77] KEGGREST_1.36.3               sparseMatrixStats_1.8.0      </span></span>
 <span><span class="co">#&gt;  [79] mime_0.12                     compiler_4.2.1               </span></span>
 <span><span class="co">#&gt;  [81] beeswarm_0.4.0                filelock_1.0.2               </span></span>
-<span><span class="co">#&gt;  [83] curl_4.3.2                    png_0.1-7                    </span></span>
+<span><span class="co">#&gt;  [83] curl_4.3.3                    png_0.1-7                    </span></span>
 <span><span class="co">#&gt;  [85] interactiveDisplayBase_1.34.0 tibble_3.1.8                 </span></span>
 <span><span class="co">#&gt;  [87] statmod_1.4.37                bslib_0.4.0                  </span></span>
 <span><span class="co">#&gt;  [89] stringi_1.7.8                 highr_0.9                    </span></span>
 <span><span class="co">#&gt;  [91] basilisk.utils_1.8.0          desc_1.4.2                   </span></span>
 <span><span class="co">#&gt;  [93] lattice_0.20-45               bluster_1.6.0                </span></span>
-<span><span class="co">#&gt;  [95] vctrs_0.4.1                   pillar_1.8.1                 </span></span>
-<span><span class="co">#&gt;  [97] lifecycle_1.0.2               rhdf5filters_1.8.0           </span></span>
+<span><span class="co">#&gt;  [95] vctrs_0.4.2                   pillar_1.8.1                 </span></span>
+<span><span class="co">#&gt;  [97] lifecycle_1.0.3               rhdf5filters_1.8.0           </span></span>
 <span><span class="co">#&gt;  [99] BiocManager_1.30.18           jquerylib_0.1.4              </span></span>
 <span><span class="co">#&gt; [101] BiocNeighbors_1.14.0          bitops_1.0-7                 </span></span>
-<span><span class="co">#&gt; [103] irlba_2.3.5                   httpuv_1.6.6                 </span></span>
+<span><span class="co">#&gt; [103] irlba_2.3.5.1                 httpuv_1.6.6                 </span></span>
 <span><span class="co">#&gt; [105] R6_2.5.1                      promises_1.2.0.1             </span></span>
 <span><span class="co">#&gt; [107] gridExtra_2.3                 vipor_0.4.5                  </span></span>
 <span><span class="co">#&gt; [109] codetools_0.2-18              assertthat_0.2.1             </span></span>
@@ -274,19 +274,19 @@
 <span><span class="co">#&gt; [113] datasets_4.2.1                GenomeInfoDbData_1.2.8       </span></span>
 <span><span class="co">#&gt; [115] parallel_4.2.1                grid_4.2.1                   </span></span>
 <span><span class="co">#&gt; [117] beachmat_2.12.0               basilisk_1.8.1               </span></span>
-<span><span class="co">#&gt; [119] rmarkdown_2.16                DelayedMatrixStats_1.18.0    </span></span>
+<span><span class="co">#&gt; [119] rmarkdown_2.17                DelayedMatrixStats_1.18.2    </span></span>
 <span><span class="co">#&gt; [121] Rtsne_0.16                    shiny_1.7.2                  </span></span>
 <span><span class="co">#&gt; [123] ggbeeswarm_0.6.0</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references">
-<div id="ref-Hie2019-geosketch">
-<p>Hie, Brian, Hyunghoon Cho, Benjamin DeMeo, Bryan Bryson, and Bonnie Berger. 2019. “Geometric Sketching Compactly Summarizes the Single-Cell Transcriptomic Landscape.” <em>Cell Syst</em> 8 (6): 483–493.e7.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Hie2019-geosketch" class="csl-entry">
+Hie, Brian, Hyunghoon Cho, Benjamin DeMeo, Bryan Bryson, and Bonnie Berger. 2019. <span>“Geometric Sketching Compactly Summarizes the <span>Single-Cell</span> Transcriptomic Landscape.”</span> <em>Cell Syst</em> 8 (6): 483–493.e7.
 </div>
-<div id="ref-Song2022-scsampler">
-<p>Song, Dongyuan, Nan Miles Xi, Jingyi Jessica Li, and Lin Wang. 2022. “ScSampler: Fast Diversity-Preserving Subsampling of Large-Scale Single-Cell Transcriptomic Data.” <em>bioRxiv</em>, 2022.01.15.476407.</p>
+<div id="ref-Song2022-scsampler" class="csl-entry">
+Song, Dongyuan, Nan Miles Xi, Jingyi Jessica Li, and Lin Wang. 2022. <span>“scSampler: Fast Diversity-Preserving Subsampling of Large-Scale Single-Cell Transcriptomic Data.”</span> <em>bioRxiv</em>, 2022.01.15.476407.
 </div>
 </div>
 </div>
