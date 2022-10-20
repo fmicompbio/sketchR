@@ -97,7 +97,8 @@ geosketch <- function(mat, N, replace = FALSE, k = "auto",
     idx <- basiliskRun(env = universalenv, fun = .run_geosketch,
                        mat = mat, N = N, replace = replace, k = k,
                        alpha = alpha, seed = seed, max_iter = max_iter,
-                       one_indexed = one_indexed, verbose = verbose)
+                       one_indexed = one_indexed, verbose = verbose,
+                       testload = "llvmlite")
     idx
 }
 
