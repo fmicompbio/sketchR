@@ -17,7 +17,6 @@
 ## List of packages exported from working environment
 .all_deps <- c(
     "_libgcc_mutex==0.1",
-    #"_openmp_mutex==4.5",
     "alabaster==0.7.12",
     "anndata==0.7.8",
     "babel==2.9.1",
@@ -52,7 +51,6 @@
     "jpeg==9e",
     "kiwisolver==1.3.2",
     "lcms2==2.12",
-    "ld_impl_linux-64==2.36.1",
     "legacy-api-wrap==1.2",
     "lerc==3.0",
     "libblas==3.9.0",
@@ -62,15 +60,10 @@
     "libcblas==3.9.0",
     "libdeflate==1.10",
     "libffi==3.3",
-    #"libgcc-ng==11.2.0",
-    #"libgfortran-ng==11.2.0",
-    "libgfortran5==11.2.0",
-    #"libgomp==11.2.0",
     "liblapack==3.9.0",
     "libllvm11==11.1.0",
     "libopenblas==0.3.18",
     "libpng==1.6.37",
-    #"libstdcxx-ng==11.2.0",
     "libtiff==4.3.0",
     "libwebp==1.2.2",
     "libwebp-base==1.2.2",
@@ -84,7 +77,6 @@
     "mock==4.0.3",
     "munkres==1.0.7",
     "natsort==8.1.0",
-    "ncurses==6.3",
     "networkx==2.6.3",
     "nomkl==1.0",
     "numba==0.55.1",
@@ -109,7 +101,6 @@
     "python-dateutil==2.8.2",
     "python_abi==3.7",
     "pytz==2021.3",
-    "readline==8.1",
     "requests==2.27.1",
     "scanpy==1.7.2",
     "scikit-learn==1.0.2",
@@ -148,6 +139,17 @@
     "zipp==3.7.0",
     "zlib==1.2.11",
     "zstd==1.5.2"
+    # not available for windows
+    #"libgfortran5==11.2.0",
+    #"ncurses==6.3",
+    #"ld_impl_linux-64==2.36.1",
+    #"readline==8.1",
+    # not available for mac
+    #"_openmp_mutex==4.5",
+    #"libgcc-ng==11.2.0",
+    #"libgfortran-ng==11.2.0",
+    #"libgomp==11.2.0",
+    #"libstdcxx-ng==11.2.0",
 )
 
 # universalenv <- BasiliskEnvironment(
