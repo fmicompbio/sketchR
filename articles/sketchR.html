@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sketchR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
       </span>
     </div>
 
@@ -62,9 +62,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Subsampling single-cell data sets with sketchR</h1>
+      <h1 data-toc-skip>Subsampling single-cell data sets with
+sketchR</h1>
             
-            <h4 data-toc-skip class="date">2022-10-20</h4>
+            <h4 data-toc-skip class="date">2022-10-28</h4>
       
       
       <div class="hidden name"><code>sketchR.Rmd</code></div>
@@ -76,12 +77,17 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette showcases the main functionalities of the <code>sketchR</code> package, and illustrates how it can be used to generate a subsample of a dataset using the geometric sketching/subsampling algorithms and implementations proposed by <span class="citation">Hie et al. (2019)</span> and <span class="citation">Song et al. (2022)</span>, as well as create a set of diagnostic plots.</p>
+<p>This vignette showcases the main functionalities of the
+<code>sketchR</code> package, and illustrates how it can be used to
+generate a subsample of a dataset using the geometric
+sketching/subsampling algorithms and implementations proposed by <span class="citation">Hie et al. (2019)</span> and <span class="citation">Song et al. (2022)</span>, as well as create a set of
+diagnostic plots.</p>
 </div>
 <div class="section level2">
 <h2 id="preparation">Preparation<a class="anchor" aria-label="anchor" href="#preparation"></a>
 </h2>
-<p>We start by loading the required packages and preparing an example data set.</p>
+<p>We start by loading the required packages and preparing an example
+data set.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sketchR</span><span class="op">)</span></span>
@@ -95,7 +101,12 @@
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>We will use the PBMC3k data set from the <em><a href="https://bioconductor.org/packages/3.15/TENxPBMCData" class="external-link">TENxPBMCData</a></em> Bioconductor package for illustration. The chunk below prepares the data set by calculating log-transformed normalized counts, finding highly variable genes, performing dimensionality reduction and predicting cell type labels using the <em><a href="https://bioconductor.org/packages/3.15/SingleR" class="external-link">SingleR</a></em> package.</p>
+<p>We will use the PBMC3k data set from the <em><a href="https://bioconductor.org/packages/3.15/TENxPBMCData" class="external-link">TENxPBMCData</a></em>
+Bioconductor package for illustration. The chunk below prepares the data
+set by calculating log-transformed normalized counts, finding highly
+variable genes, performing dimensionality reduction and predicting cell
+type labels using the <em><a href="https://bioconductor.org/packages/3.15/SingleR" class="external-link">SingleR</a></em>
+package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load data</span></span>
 <span><span class="va">pbmc3k</span> <span class="op">&lt;-</span> <span class="fu">TENxPBMCData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TENxPBMCData/man/TENxPBMCData.html" class="external-link">TENxPBMCData</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"pbmc3k"</span><span class="op">)</span></span>
@@ -139,7 +150,11 @@
 <div class="section level2">
 <h2 id="subsampling">Subsampling<a class="anchor" aria-label="anchor" href="#subsampling"></a>
 </h2>
-<p>The <code><a href="../reference/geosketch.html">geosketch()</a></code> function performs geometric sketching by calling the <code>geosketch</code> <a href="https://github.com/brianhie/geosketch" class="external-link">python package</a>. The output is a vector of indices that can be used to subset the full dataset. The provided seed will be propagated to the python code to achieve reproducibility.</p>
+<p>The <code><a href="../reference/geosketch.html">geosketch()</a></code> function performs geometric sketching by
+calling the <code>geosketch</code> <a href="https://github.com/brianhie/geosketch" class="external-link">python package</a>. The
+output is a vector of indices that can be used to subset the full
+dataset. The provided seed will be propagated to the python code to
+achieve reproducibility.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">idx800gs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geosketch.html">geosketch</a></span><span class="op">(</span><span class="fu">SingleCellExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">pbmc3k</span>, <span class="st">"PCA"</span><span class="op">)</span>, </span>
 <span>                      N <span class="op">=</span> <span class="fl">800</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
@@ -147,7 +162,9 @@
 <span><span class="co">#&gt; [1]  4  5 10 11 12 16</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">idx800gs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 800</span></span></code></pre></div>
-<p>Similarly, the <code><a href="../reference/scsampler.html">scsampler()</a></code> function calls the <code>scSampler</code> <a href="https://github.com/SONGDONGYUAN1994/scsampler" class="external-link">python package</a> to perform subsampling.</p>
+<p>Similarly, the <code><a href="../reference/scsampler.html">scsampler()</a></code> function calls the
+<code>scSampler</code> <a href="https://github.com/SONGDONGYUAN1994/scsampler" class="external-link">python package</a>
+to perform subsampling.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">idx800scs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scsampler.html">scsampler</a></span><span class="op">(</span><span class="fu">SingleCellExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">pbmc3k</span>, <span class="st">"PCA"</span><span class="op">)</span>, </span>
 <span>                       N <span class="op">=</span> <span class="fl">800</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
@@ -155,7 +172,9 @@
 <span><span class="co">#&gt; [1] 1079  644 1494 1278    5  391</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">idx800scs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 800</span></span></code></pre></div>
-<p>To illustrate the result of the subsampling, we plot the tSNE representation of the original data as well as the two subsets (using the tSNE coordinates derived from the full dataset).</p>
+<p>To illustrate the result of the subsampling, we plot the tSNE
+representation of the original data as well as the two subsets (using
+the tSNE coordinates derived from the full dataset).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span></span>
 <span>    <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotTSNE</a></span><span class="op">(</span><span class="va">pbmc3k</span>, colour_by <span class="op">=</span> <span class="st">"labels_main"</span><span class="op">)</span>,</span>
@@ -163,7 +182,8 @@
 <span>    <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotTSNE</a></span><span class="op">(</span><span class="va">pbmc3k</span><span class="op">[</span>, <span class="va">idx800scs</span><span class="op">]</span>, colour_by <span class="op">=</span> <span class="st">"labels_main"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="sketchR_files/figure-html/unnamed-chunk-5-1.png" width="960"></p>
-<p>We can also illustrate the relative abundance of each cell type in the full data and in the subsets, respectively.</p>
+<p>We can also illustrate the relative abundance of each cell type in
+the full data and in the subsets, respectively.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/compareCompositionPlot.html">compareCompositionPlot</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">pbmc3k</span><span class="op">)</span>, </span>
 <span>                       idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>geosketch <span class="op">=</span> <span class="va">idx800gs</span>,</span>
@@ -174,7 +194,9 @@
 <div class="section level2">
 <h2 id="diagnostic-plots">Diagnostic plots<a class="anchor" aria-label="anchor" href="#diagnostic-plots"></a>
 </h2>
-<p><code>sketchR</code> provides a convenient function to plot the Hausdorff distance between the full dataset and the subsample, for a range of sketch sizes.</p>
+<p><code>sketchR</code> provides a convenient function to plot the
+Hausdorff distance between the full dataset and the subsample, for a
+range of sketch sizes.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hausdorffDistPlot.html">hausdorffDistPlot</a></span><span class="op">(</span>mat <span class="op">=</span> <span class="fu">SingleCellExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">pbmc3k</span>, <span class="st">"PCA"</span><span class="op">)</span>, </span>
 <span>                  Nvec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">800</span>, <span class="fl">2000</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">123</span>, </span>
@@ -212,7 +234,7 @@
 <span><span class="co">#&gt; [17] GenomeInfoDb_1.32.4         IRanges_2.30.1             </span></span>
 <span><span class="co">#&gt; [19] S4Vectors_0.34.0            BiocGenerics_0.42.0        </span></span>
 <span><span class="co">#&gt; [21] MatrixGenerics_1.8.1        matrixStats_0.62.0         </span></span>
-<span><span class="co">#&gt; [23] sketchR_0.1.5               BiocStyle_2.24.0           </span></span>
+<span><span class="co">#&gt; [23] sketchR_0.1.6               BiocStyle_2.24.0           </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] AnnotationHub_3.4.0           BiocFileCache_2.4.0          </span></span>
@@ -227,7 +249,7 @@
 <span><span class="co">#&gt;  [19] rappdirs_0.3.3                ggrepel_0.9.1                </span></span>
 <span><span class="co">#&gt;  [21] textshaping_0.3.6             xfun_0.34                    </span></span>
 <span><span class="co">#&gt;  [23] dplyr_1.0.10                  crayon_1.5.2                 </span></span>
-<span><span class="co">#&gt;  [25] RCurl_1.98-1.9                jsonlite_1.8.2               </span></span>
+<span><span class="co">#&gt;  [25] RCurl_1.98-1.9                jsonlite_1.8.3               </span></span>
 <span><span class="co">#&gt;  [27] glue_1.6.2                    gtable_0.3.1                 </span></span>
 <span><span class="co">#&gt;  [29] zlibbioc_1.42.0               XVector_0.36.0               </span></span>
 <span><span class="co">#&gt;  [31] BiocSingular_1.12.0           Rhdf5lib_1.18.2              </span></span>
@@ -250,7 +272,7 @@
 <span><span class="co">#&gt;  [65] RSQLite_2.2.18                ExperimentHub_2.4.0          </span></span>
 <span><span class="co">#&gt;  [67] evaluate_0.17                 stringr_1.4.1                </span></span>
 <span><span class="co">#&gt;  [69] fastmap_1.1.0                 yaml_2.3.6                   </span></span>
-<span><span class="co">#&gt;  [71] ragg_1.2.3                    grDevices_4.2.1              </span></span>
+<span><span class="co">#&gt;  [71] ragg_1.2.4                    grDevices_4.2.1              </span></span>
 <span><span class="co">#&gt;  [73] knitr_1.40                    bit64_4.0.5                  </span></span>
 <span><span class="co">#&gt;  [75] fs_1.5.2                      purrr_0.3.5                  </span></span>
 <span><span class="co">#&gt;  [77] KEGGREST_1.36.3               sparseMatrixStats_1.8.0      </span></span>
@@ -262,9 +284,9 @@
 <span><span class="co">#&gt;  [89] stringi_1.7.8                 highr_0.9                    </span></span>
 <span><span class="co">#&gt;  [91] basilisk.utils_1.8.0          desc_1.4.2                   </span></span>
 <span><span class="co">#&gt;  [93] lattice_0.20-45               bluster_1.6.0                </span></span>
-<span><span class="co">#&gt;  [95] vctrs_0.4.2                   pillar_1.8.1                 </span></span>
+<span><span class="co">#&gt;  [95] vctrs_0.5.0                   pillar_1.8.1                 </span></span>
 <span><span class="co">#&gt;  [97] lifecycle_1.0.3               rhdf5filters_1.8.0           </span></span>
-<span><span class="co">#&gt;  [99] BiocManager_1.30.18           jquerylib_0.1.4              </span></span>
+<span><span class="co">#&gt;  [99] BiocManager_1.30.19           jquerylib_0.1.4              </span></span>
 <span><span class="co">#&gt; [101] BiocNeighbors_1.14.0          bitops_1.0-7                 </span></span>
 <span><span class="co">#&gt; [103] irlba_2.3.5.1                 httpuv_1.6.6                 </span></span>
 <span><span class="co">#&gt; [105] R6_2.5.1                      promises_1.2.0.1             </span></span>
@@ -275,7 +297,7 @@
 <span><span class="co">#&gt; [115] parallel_4.2.1                grid_4.2.1                   </span></span>
 <span><span class="co">#&gt; [117] beachmat_2.12.0               basilisk_1.8.1               </span></span>
 <span><span class="co">#&gt; [119] rmarkdown_2.17                DelayedMatrixStats_1.18.2    </span></span>
-<span><span class="co">#&gt; [121] Rtsne_0.16                    shiny_1.7.2                  </span></span>
+<span><span class="co">#&gt; [121] Rtsne_0.16                    shiny_1.7.3                  </span></span>
 <span><span class="co">#&gt; [123] ggbeeswarm_0.6.0</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
@@ -283,10 +305,16 @@
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Hie2019-geosketch" class="csl-entry">
-Hie, Brian, Hyunghoon Cho, Benjamin DeMeo, Bryan Bryson, and Bonnie Berger. 2019. <span>“Geometric Sketching Compactly Summarizes the <span>Single-Cell</span> Transcriptomic Landscape.”</span> <em>Cell Syst</em> 8 (6): 483–493.e7.
+Hie, Brian, Hyunghoon Cho, Benjamin DeMeo, Bryan Bryson, and Bonnie
+Berger. 2019. <span>“Geometric Sketching Compactly Summarizes the
+<span>Single-Cell</span> Transcriptomic Landscape.”</span> <em>Cell
+Syst</em> 8 (6): 483–493.e7.
 </div>
 <div id="ref-Song2022-scsampler" class="csl-entry">
-Song, Dongyuan, Nan Miles Xi, Jingyi Jessica Li, and Lin Wang. 2022. <span>“scSampler: Fast Diversity-Preserving Subsampling of Large-Scale Single-Cell Transcriptomic Data.”</span> <em>bioRxiv</em>, 2022.01.15.476407.
+Song, Dongyuan, Nan Miles Xi, Jingyi Jessica Li, and Lin Wang. 2022.
+<span>“scSampler: Fast Diversity-Preserving Subsampling of Large-Scale
+Single-Cell Transcriptomic Data.”</span> <em>bioRxiv</em>,
+2022.01.15.476407.
 </div>
 </div>
 </div>
