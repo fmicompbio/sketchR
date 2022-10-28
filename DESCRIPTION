@@ -11,7 +11,7 @@ Description: Provides an R interface for various subsampling algorithms
     implemented in python packages. Currently, interfaces to the geosketch 
     and scSampler python packages are implemented. 
 Imports:
-    basilisk (>= 1.9.5),
+    basilisk,
     Biobase,
     DelayedArray,
     dplyr,

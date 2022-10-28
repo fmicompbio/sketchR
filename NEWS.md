@@ -1,6 +1,6 @@
 # sketchR 0.1.6
 
-* Add workaround for mismatching GLIBCXX versions
+* Pin versions of all conda packages
 
 # sketchR 0.1.5
 

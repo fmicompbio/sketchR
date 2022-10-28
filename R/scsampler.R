@@ -76,8 +76,7 @@ scsampler <- function(mat, N, random_split = 1, seed = 0) {
     ## --------------------------------------------------------------------- ##
     idx <- basiliskRun(env = universalenv, fun = .run_scsampler,
                        mat = mat, n_obs = N, random_state = seed,
-                       random_split = random_split,
-                       testload = "llvmlite.binding")
+                       random_split = random_split)
     idx
 }
 
