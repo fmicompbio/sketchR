@@ -1,3 +1,11 @@
+# sketchR 0.1.6
+
+* Pin versions of all conda packages
+
+# sketchR 0.1.5
+
+* Update scSampler to v1.0.2
+
 # sketchR 0.1.4
 
 * compareCompositionPlot() and hausdorffDistPlot() now return a ggplot object instead of a data.frame
