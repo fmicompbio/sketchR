@@ -65,6 +65,7 @@ jobs:
 
       - name: Check python
         run: which python
+        shell: bash
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
