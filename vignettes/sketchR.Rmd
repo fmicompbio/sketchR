@@ -46,6 +46,7 @@ suppressPackageStartupMessages({
     library(cowplot)
     library(SummarizedExperiment)
     library(SingleCellExperiment)
+    library(beachmat.hdf5)
 })
 ```
 
@@ -80,7 +81,6 @@ pbmc3k <- scater::runTSNE(pbmc3k, dimred = "PCA")
 
 ## Predict cell type labels
 ref_monaco <- celldex::MonacoImmuneData()
-assay(pbmc3k, "logcounts") <- as.matrix(assay(pbmc3k, "logcounts"))
 pred_monaco_main <- SingleR::SingleR(test = pbmc3k, ref = ref_monaco, 
                                      labels = ref_monaco$label.main)
 pbmc3k$labels_main <- pred_monaco_main$labels
