@@ -108,6 +108,10 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
+      - name: Check DYLD_FALLBACK_LIBRARY_PATH
+        if: runner.os == 'macOS'
+        run: echo $DYLD_FALLBACK_LIBRARY_PATH
+
       - name: Build, Install, Check
         uses: grimbough/bioc-actions/build-install-check@v1
 
