@@ -45,6 +45,10 @@ jobs:
         uses: r-lib/actions/setup-pandoc@v2
         if: matrix.config.image == null
 
+      - name: Unset DYLD_FALLBACK_LIBRARY_PATH
+        if: runner.os == 'macOS'
+        run: unset DYLD_FALLBACK_LIBRARY_PATH
+
       - name: Install remotes
         run: |
           install.packages('remotes')
@@ -103,6 +107,10 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
+
+      - name: Check DYLD_FALLBACK_LIBRARY_PATH
+        if: runner.os == 'macOS'
+        run: echo $DYLD_FALLBACK_LIBRARY_PATH
 
       - name: Build, Install, Check
         uses: grimbough/bioc-actions/build-install-check@v1

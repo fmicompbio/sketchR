@@ -46,6 +46,7 @@ suppressPackageStartupMessages({
     library(cowplot)
     library(SummarizedExperiment)
     library(SingleCellExperiment)
+    library(beachmat.hdf5)
 })
 ```
 
