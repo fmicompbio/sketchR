@@ -1,8 +1,10 @@
 #' @importFrom basilisk BasiliskEnvironment
 
 ## List of packages exported from working environment
-## - pinned versions were obtained from https://github.com/csoneson/sketchR_package_list
-## - we are currently not setting dependencies on basilisk.utils::isLinuxAarch64()
+## - pinned versions were obtained from
+## https://github.com/csoneson/sketchR_package_list
+## - we are currently not setting dependencies on
+## basilisk.utils::isLinuxAarch64()
 if (basilisk.utils::isLinux()) {
     .sketchR_dependencies <- c(
         "_libgcc_mutex==0.1",
