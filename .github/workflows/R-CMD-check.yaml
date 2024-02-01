@@ -1,8 +1,9 @@
 on:
+  workflow_dispatch:
   push:
   pull_request:
     branches:
-      - main
+      - devel
   schedule:
     - cron: '0 9 * * 4'
 
@@ -19,9 +20,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - { os: macOS-latest, bioc: 'release', curlConfigPath: '/usr/bin/'}
-        - { os: windows-latest, bioc: 'release'}
-        - { os: ubuntu-latest, bioc: 'release', image: "bioconductor/bioconductor_docker:devel", cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+        - { os: macOS-latest, bioc: 'devel'}
+        - { os: macos-14, bioc: 'devel'}
+        - { os: windows-latest, bioc: 'devel'}
+        - { os: ubuntu-latest, bioc: 'devel', image: "bioconductor/bioconductor_docker:devel", cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -29,7 +31,6 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      CURL_CONFIG: ${{ matrix.config.curlConfigPath }}curl-config
 
     steps:
       - name: Check out repo
@@ -75,18 +76,6 @@ jobs:
         if: runner.os == 'Linux'
         uses: r-lib/actions/setup-r-dependencies@v2
 
-#      - name: Install system dependencies, round 2 (Linux)
-#        if: runner.os == 'Linux'
-#        env:
-#          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
-#        run: |
-#          #sudo apt-get update && sudo apt-get -y install 2to3 python2-minimal python2 dh-python python-is-python3
-#          #Rscript -e "remotes::install_github('r-hub/sysreqs')"
-#          #sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-#          #sudo -s eval "$sysreqs"
-#          sudo apt-get update && sudo apt-get -y install libcurl4-openssl-dev libharfbuzz-dev libfribidi-dev
-#          sudo apt-get install --only-upgrade libstdc++6
-
       - name: Install system dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
@@ -115,11 +104,11 @@ jobs:
       - name: Build, Install, Check
         uses: grimbough/bioc-actions/build-install-check@v1
 
-#      - name: Run BiocCheck
-#        uses: grimbough/bioc-actions/run-BiocCheck@v1
-#        with:
-#          arguments: '--no-check-bioc-views --no-check-bioc-help'
-#          error-on: 'error'
+      - name: Run BiocCheck
+        uses: grimbough/bioc-actions/run-BiocCheck@v1
+        with:
+          arguments: '--no-check-bioc-views --no-check-bioc-help'
+          error-on: 'error'
 
       - name: Show testthat output
         if: always()
@@ -141,7 +130,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.config.os == 'macOS-latest'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/devel' && matrix.config.os == 'macOS-latest'
         run: |
           R CMD INSTALL .
           Rscript -e "remotes::install_dev('pkgdown'); pkgdown::deploy_to_branch(new_process = FALSE)"
