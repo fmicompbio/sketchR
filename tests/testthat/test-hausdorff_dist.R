@@ -47,28 +47,32 @@ test_that("Hausdorff diagnostic plot works", {
                                                     scsampler = c(seed = 1))),
                  "of class 'list'")
 
-    df1 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1)
+    set.seed(1)
+    df1 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
     expect_s3_class(df1, "ggplot")
     df1 <- df1$data
     expect_s3_class(df1, "data.frame")
     expect_named(df1, c("method", "frac", "mean", "se", "low", "high"))
     expect_equal(nrow(df1), 6)
 
-    df2 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1)
+    set.seed(1)
+    df2 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
     expect_s3_class(df2, "ggplot")
     df2 <- df2$data
     expect_equal(df1, df2)
 
     ## Check that we get reproducible results also if we only use a
     ## subset of the methods
-    df2b <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1,
+    set.seed(1)
+    df2b <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2,
                               methods = c("geosketch", "uniform"))
     expect_s3_class(df2b, "ggplot")
     df2b <- df2b$data
     expect_equal(df1[df1$method %in% c("geosketch", "uniform"), ], df2b,
                  ignore_attr = TRUE)
 
-    df3 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 42)
+    set.seed(42)
+    df3 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
     expect_s3_class(df3, "ggplot")
     df3 <- df3$data
     expect_equal(df1$frac, df3$frac)
@@ -77,7 +81,8 @@ test_that("Hausdorff diagnostic plot works", {
     expect_false(all(df1$se == df3$se))
 
     ## Ignore any seed argument provided to the individual methods
-    df4 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2, seed = 1,
+    set.seed(1)
+    df4 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2,
                              extraArgs = list(geosketch = list(seed = 123),
                                               scsampler = list(seed = 456)))
     expect_s3_class(df4, "ggplot")

@@ -1,7 +1,9 @@
 #' Create diagnostic plot of Hausdorff distances
 #'
 #' Create diagnostic plot showing the Hausdorff distance between a sketch
-#' and the full data set, for varying sketch sizes.
+#' and the full data set, for varying sketch sizes. For reproducibility,
+#' seed the random number generator before calling this function using
+#' \code{set.seed}.
 #'
 #' @param mat m x n matrix. Samples (the dimension along which to subsample)
 #'     should be in the rows, features in the columns.
@@ -12,8 +14,6 @@
 #'     minimum distances to discard when calculating the robust Hausdorff
 #'     distance. Setting q=0 gives the classical Hausdorff distance.
 #'     The default is 1e-4, as suggested by Hie et al (2019).
-#' @param seed Numeric scalar or \code{NULL} for initialization of the
-#'     random number generator.
 #' @param methods Character vector, indicating which method(s) to include
 #'     in the plot. Should be a subset of c("geosketch", "scsampler",
 #'     "uniform"), where "uniform" randomly samples from input features
@@ -64,7 +64,6 @@
 #' @importFrom stats runif
 #'
 hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
-                              seed = NULL,
                               methods = c("geosketch", "scsampler", "uniform"),
                               extraArgs = list()) {
     ## --------------------------------------------------------------------- ##
@@ -75,10 +74,6 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
     Nvec <- as.integer(Nvec)
     .assertScalar(x = Nrep, type = "numeric", rngIncl = c(1, Inf))
     .assertScalar(x = q, type = "numeric", rngIncl = c(0, 1))
-    if (!is.null(seed)) {
-        .assertScalar(x = seed, type = "numeric")
-        seed <- as.integer(seed)
-    }
     .assertVector(x = methods, type = "character",
                   validValues = c("geosketch", "scsampler", "uniform"))
     .assertVector(x = extraArgs, type = "list")
@@ -94,13 +89,6 @@ hausdorffDistPlot <- function(mat, Nvec, Nrep = 5, q = 1e-4,
     extraArgs <- lapply(extraArgs, function(ea) {
         ea[!(names(ea) %in% c("mat", "N", "seed"))]
     })
-
-    ## --------------------------------------------------------------------- ##
-    ## Set the seed to initialize the random number state
-    ## --------------------------------------------------------------------- ##
-    if (!is.null(seed)) {
-        set.seed(seed)
-    }
 
     ## --------------------------------------------------------------------- ##
     ## Calculate Hausdorff distances
