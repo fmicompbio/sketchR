@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sketchR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.0</span>
       </span>
     </div>
 
@@ -31,7 +31,13 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/fmicompbio/sketchR/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -41,7 +47,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Run geosketch to subsample a matrix</h1>
-    
+    <small class="dont-index">Source: <a href="https://github.com/fmicompbio/sketchR/blob/HEAD/R/geosketch.R" class="external-link"><code>R/geosketch.R</code></a></small>
     <div class="hidden name"><code>geosketch.Rd</code></div>
     </div>
 
@@ -137,7 +143,7 @@ single-cell transcriptomic landscape. Cell Systems 8, 483–493.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">geosketch</span><span class="op">(</span>mat <span class="op">=</span> <span class="va">x</span>, N <span class="op">=</span> <span class="fl">10</span>, seed <span class="op">=</span> <span class="fl">42</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  3  4 31 38 42 50 62 70 71 79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 10 20 34 36 42 45 50 62 70 95</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
