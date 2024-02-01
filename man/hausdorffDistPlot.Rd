@@ -38,8 +38,7 @@ should be the method names (currently, "geosketch" or "scsampler"),
 and each list element should be a named list of argument values. See
 the examples for an illustration of how to use this argument. Note that
 the \code{seed} argument, if provided to any of the methods,
-will be ignored in favor of the global \code{seed} argument
-(since the former would imply providing the same seed for each
+will be ignored (since it would imply providing the same seed for each
 repeated run of the sketching).}
 }
 \value{
@@ -57,11 +56,11 @@ mat <- matrix(rnorm(1000), nrow = 100)
 
 ## Generate diagnostic Hausdorff distance plot
 ## (including all available methods)
-hdp <- hausdorffDistPlot(mat, Nvec = c(10, 25, 50))
+hausdorffDistPlot(mat, Nvec = c(10, 25, 50))
 
 ## Provide additional arguments for geosketch
-hdp <- hausdorffDistPlot(mat, Nvec = c(10, 25, 50), Nrep = 2,
-                         extraArgs = list(geosketch = list(max_iter = 100)))
+hausdorffDistPlot(mat, Nvec = c(10, 25, 50), Nrep = 2,
+                  extraArgs = list(geosketch = list(max_iter = 100)))
 
 }
 \references{
