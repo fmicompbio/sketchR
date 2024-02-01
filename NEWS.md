@@ -1,3 +1,7 @@
+# sketchR 0.99.0
+
+* Prepare for Bioconductor submission
+
 # sketchR 0.1.6
 
 * Pin versions of all conda packages
