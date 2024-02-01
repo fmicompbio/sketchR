@@ -140,11 +140,13 @@ compareCompositionPlot(SummarizedExperiment::colData(pbmc3k),
 
 `sketchR` provides a convenient function to plot the Hausdorff distance 
 between the full dataset and the subsample, for a range of sketch 
-sizes. 
+sizes (to make this plot reproducible, we use `set.seed` before the
+call).
 
 ```{r}
+set.seed(123)
 hausdorffDistPlot(mat = SingleCellExperiment::reducedDim(pbmc3k, "PCA"), 
-                  Nvec = c(400, 800, 2000), seed = 123, 
+                  Nvec = c(400, 800, 2000),
                   Nrep = 3, methods = c("geosketch", "scsampler", "uniform"))
 ```
 
