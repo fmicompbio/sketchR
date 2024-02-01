@@ -1,5 +1,6 @@
 Package: sketchR
 Version: 0.99.0
+Date: 2024-02-01
 Title: An R interface for python subsampling/sketching algorithms
 Authors@R: c(
     person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",
@@ -9,7 +10,8 @@ Authors@R: c(
 License: MIT + file LICENSE
 Description: Provides an R interface for various subsampling algorithms 
     implemented in python packages. Currently, interfaces to the geosketch 
-    and scSampler python packages are implemented. 
+    and scSampler python packages are implemented. In addition it also
+    provides diagnostic plots to evaluate the subsampling.
 Imports:
     basilisk,
     Biobase,
@@ -37,6 +39,8 @@ Suggests:
     BiocStyle,
     BiocManager,
     SingleCellExperiment
+URL: https://github.com/fmicompbio/sketchR
+BugReports: https://github.com/fmicompbio/sketchR/issues
 RoxygenNote: 7.3.1
 Encoding: UTF-8
 StagedInstall: no
