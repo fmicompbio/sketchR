@@ -1,3 +1,7 @@
+# sketchR 0.99.1
+
+* Version bump to trigger new SPB build, no changes
+
 # sketchR 0.99.0
 
 * Prepare for Bioconductor submission
