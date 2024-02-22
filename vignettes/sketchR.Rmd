@@ -24,6 +24,27 @@ library(BiocStyle)
 
 ## Introduction
 
+As the number of cells that are routinely interrogated in single-cell 
+experiments increases rapidly and can easily reach hundreds of thousands, the 
+computational resource requirements also grow larger. Several approaches have 
+been proposed to either subsample or aggregate cells in order to reduce the 
+size of the data and enable the application of standard analysis procedures. 
+One such approach is geometric sketching - subsampling in a density-aware 
+manner in such a way that densely populated regions of the 
+gene expression space are subsampled more aggressively, while a larger 
+fraction of cells are retained in sparsely populated regions. In addition to 
+reducing the size of the data set, this often also increases the relative 
+representation of rare cell types in the subsampled data set.
+
+Several tools have been developed for applying sketching to single-cell 
+(or other) data sets, but not all of them are easily applicable from R.
+The `sketchR` package implements an R/Bioconductor interface to some of 
+the most popular python packages for geometric sketching, allowing them to be 
+directly incorporated into Bioconductor-based single-cell analysis workflows. 
+The interaction with python is managed using the `basilisk` package, which 
+automatically takes care of generating and activating a suitable conda 
+environment with the required packages. 
+
 This vignette showcases the main functionalities of the `sketchR` package, 
 and illustrates how it can be used to generate a subsample of a dataset using 
 the geometric sketching/subsampling algorithms and implementations proposed by 
