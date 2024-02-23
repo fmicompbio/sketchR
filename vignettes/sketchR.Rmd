@@ -51,6 +51,19 @@ the geometric sketching/subsampling algorithms and implementations proposed by
 @Hie2019-geosketch and @Song2022-scsampler, as well as create a set of 
 diagnostic plots. 
 
+## Installation
+
+`sketchR` can be installed from Bioconductor using the following code: 
+
+```{r}
+#| eval: false
+
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("sketchR")
+```
+
 ## Preparation
 
 We start by loading the required packages and preparing an example data set. 

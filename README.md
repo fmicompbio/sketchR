@@ -8,7 +8,7 @@
 
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/csoneson/sketchR/workflows/R-CMD-check/badge.svg)](https://github.com/csoneson/sketchR/actions)
+[![R-CMD-check](https://github.com/fmicompbio/sketchR/workflows/R-CMD-check/badge.svg)](https://github.com/fmicompbio/sketchR/actions)
 <!-- badges: end -->
 
 `sketchR` provides a simple interface to the [`geosketch`](https://github.com/brianhie/geosketch) and 
@@ -22,12 +22,13 @@ package for interaction between R and python.
 
 ## Installation
 
-You can install the development version of sketchR from 
-[GitHub](https://github.com/) with:
+You can install `sketchR` from Bioconductor (release 3.19 onwards) using:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("csoneson/sketchR")
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("sketchR")
 ```
 
 ## Example
