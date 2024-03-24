@@ -1,7 +1,7 @@
-pandoc: 2.19.2
+pandoc: 3.1.11
 pkgdown: 2.0.7.9000
-pkgdown_sha: 548a9493b72ff93d3ed8392d4ad30b77d8b15fa5
+pkgdown_sha: 676cf1dce39e4dc5aa1bcb671b1e14e992589a0a
 articles:
   sketchR: sketchR.html
-last_built: 2024-02-01T20:09Z
+last_built: 2024-03-24T09:35Z
 
