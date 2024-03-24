@@ -68,8 +68,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-bioc-${{ matrix.config.bioc }}-
+          key: ${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-
 
       - name: Update apt-get
         if: runner.os == 'Linux'
