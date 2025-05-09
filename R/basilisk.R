@@ -282,7 +282,49 @@ if (basilisk::isLinuxAarch64()) {
         "wheel==0.45.1"
     )
 } else if (basilisk::isMacOSX()) {
-    .sketchR_dependencies <- c()
+    .sketchR_dependencies <- c(
+        "anndata==0.11.4",
+        "array_api_compat==1.11.2",
+        "contourpy==1.3.2",
+        "cycler==0.12.1",
+        "fonttools==4.57.0",
+        "h5py==3.13.0",
+        "joblib==1.5.0",
+        "kiwisolver==1.4.8",
+        "legacy-api-wrap==1.4.1",
+        "llvmlite==0.44.0",
+        "matplotlib==3.10.3",
+        "natsort==8.4.0",
+        "networkx==3.4.2",
+        "numba==0.61.2",
+        "numpy==2.2.5",
+        "packaging==25.0",
+        "pandas==2.2.3",
+        "patsy==1.0.1",
+        "pillow==11.2.1",
+        "pip==25.1.1",
+        "pynndescent==0.5.13",
+        "pyparsing==3.2.3",
+        "python-dateutil==2.9.0.post0",
+        "pytz==2025.2",
+        "scanpy==1.10.3",
+        "scikit-learn==1.6.1",
+        "scipy==1.15.3",
+        "seaborn==0.13.2",
+        "session_info==1.0.1",
+        "setuptools==80.3.1",
+        "six==1.17.0",
+        "statsmodels==0.14.4",
+        "stdlib-list==0.11.1",
+        "threadpoolctl==3.6.0",
+        "tqdm==4.67.1",
+        "tzdata==2025.2",
+        "umap-learn==0.5.7",
+        "wheel==0.45.1"
+    )
+    # .sketchR_dependencies <- c(
+    #     "numpy==1.26.4"
+    # )
     # .sketchR_dependencies <- c(
     #     "anndata==0.10.9",
     #     "array-api-compat==1.9",
@@ -389,7 +431,8 @@ if (basilisk::isLinuxAarch64()) {
     #     "zstd==1.5.6")
 } else if (basilisk::isWindows()) {
     .sketchR_dependencies <- c(
-        "numpy==1.26.4"
+        "numpy==1.26.4",
+        "pandas==2.2.3"
     )
     # .sketchR_dependencies <- c(
     #     "anndata==0.10.9",
