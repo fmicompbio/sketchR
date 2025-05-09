@@ -4,7 +4,9 @@
 ## - pinned versions were obtained from
 ## https://github.com/csoneson/sketchR_package_list
 if (basilisk::isLinuxAarch64()) {
-    .sketchR_dependencies <- c()
+    .sketchR_dependencies <- c(
+        "numpy==1.26.4"
+    )
     # .sketchR_dependencies <- c(
     #     "_openmp_mutex==4.5",
     #     "anndata==0.10.9",
@@ -120,7 +122,9 @@ if (basilisk::isLinuxAarch64()) {
     #     "xz==5.2.6",
     #     "zstd==1.5.6")
 } else if (basilisk::isLinux()) {
-    .sketchR_dependencies <- c()
+    .sketchR_dependencies <- c(
+        "numpy==1.26.4"
+    )
     # .sketchR_dependencies <- c(
     #     "_libgcc_mutex==0.1",
     #     "_openmp_mutex==4.5",
@@ -239,7 +243,7 @@ if (basilisk::isLinuxAarch64()) {
 } else if (basilisk::isMacOSXArm()) {
     .sketchR_dependencies <- c(
         "anndata==0.11.4",
-        "array-api-compat==1.11.2",
+        "array_api_compat==1.11.2",
         "contourpy==1.3.2",
         "cycler==0.12.1",
         "fonttools==4.57.0",
@@ -252,6 +256,7 @@ if (basilisk::isLinuxAarch64()) {
         "natsort==8.4.0",
         "networkx==3.4.2",
         "numba==0.61.2",
+        "numpy==2.2.5",
         "packaging==25.0",
         "pandas==2.2.3",
         "patsy==1.0.1",
@@ -265,7 +270,7 @@ if (basilisk::isLinuxAarch64()) {
         "scikit-learn==1.6.1",
         "scipy==1.15.3",
         "seaborn==0.13.2",
-        "session-info==1.0.1",
+        "session_info==1.0.1",
         "setuptools==80.3.1",
         "six==1.17.0",
         "statsmodels==0.14.4",
@@ -383,7 +388,9 @@ if (basilisk::isLinuxAarch64()) {
     #     "xz==5.2.6",
     #     "zstd==1.5.6")
 } else if (basilisk::isWindows()) {
-    .sketchR_dependencies <- c()
+    .sketchR_dependencies <- c(
+        "numpy==1.26.4"
+    )
     # .sketchR_dependencies <- c(
     #     "anndata==0.10.9",
     #     "array-api-compat==1.9",
