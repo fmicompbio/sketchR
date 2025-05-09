@@ -63,12 +63,6 @@ jobs:
           install.packages('remotes')
         shell: Rscript {0}
 
-      - name: Install development version of basilisk and basilisk.utils
-        run: |
-          BiocManager::install("LTLA/basilisk", ref = "venv")
-          BiocManager::install("Bioconductor/basilisk.utils", ref = "overhaul")
-        shell: Rscript {0}
-
       - name: Query dependencies
         run: |
           saveRDS(remotes::dev_package_deps(dependencies = TRUE, repos = c(getOption('repos'), BiocManager::repositories())), 'depends.Rds', version = 2)
@@ -133,6 +127,12 @@ jobs:
       - name: Check DYLD_FALLBACK_LIBRARY_PATH
         if: runner.os == 'macOS'
         run: echo $DYLD_FALLBACK_LIBRARY_PATH
+
+      - name: Install development version of basilisk and basilisk.utils
+        run: |
+          BiocManager::install("LTLA/basilisk", ref = "venv")
+          BiocManager::install("Bioconductor/basilisk.utils", ref = "overhaul")
+        shell: Rscript {0}
 
       - name: Build, Install, Check
         uses: grimbough/bioc-actions/build-install-check@v1
