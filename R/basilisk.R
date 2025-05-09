@@ -5,7 +5,9 @@
 ## https://github.com/csoneson/sketchR_package_list
 if (basilisk::isLinuxAarch64()) {
     .sketchR_dependencies <- c(
-        "numpy==1.26.4"
+        "numpy==1.26.4",
+        "pandas==2.2.3",
+        "scanpy==1.10.3"
     )
     # .sketchR_dependencies <- c(
     #     "_openmp_mutex==4.5",
@@ -123,7 +125,9 @@ if (basilisk::isLinuxAarch64()) {
     #     "zstd==1.5.6")
 } else if (basilisk::isLinux()) {
     .sketchR_dependencies <- c(
-        "numpy==1.26.4"
+        "numpy==1.26.4",
+        "pandas==2.2.3",
+        "scanpy==1.10.3"
     )
     # .sketchR_dependencies <- c(
     #     "_libgcc_mutex==0.1",
@@ -432,7 +436,8 @@ if (basilisk::isLinuxAarch64()) {
 } else if (basilisk::isWindows()) {
     .sketchR_dependencies <- c(
         "numpy==1.26.4",
-        "pandas==2.2.3"
+        "pandas==2.2.3",
+        "scanpy==1.10.3"
     )
     # .sketchR_dependencies <- c(
     #     "anndata==0.10.9",
