@@ -37,6 +37,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      cache-version: v1
       #BASILISK_MINICONDA_VERSION: ${{ matrix.config.miniconda }}
 
     steps:
@@ -78,8 +79,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-
+          key: ${{ env.cache-version }}-${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ env.cache-version }}-${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-
 
       - name: Update apt-get
         if: runner.os == 'Linux'
