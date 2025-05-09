@@ -62,6 +62,12 @@ jobs:
           install.packages('remotes')
         shell: Rscript {0}
 
+      - name: Install development version of basilisk and basilisk.utils
+        run: |
+          BiocManager::install("LTLA/basilisk", ref = "venv")
+          BiocManager::install("Bioconductor/basilisk.utils", ref = "overhaul")
+        shell: Rscript {0}
+
       - name: Query dependencies
         run: |
           saveRDS(remotes::dev_package_deps(dependencies = TRUE, repos = c(getOption('repos'), BiocManager::repositories())), 'depends.Rds', version = 2)
@@ -153,6 +159,11 @@ jobs:
         run: |
           install.packages("covr")
           covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")
+        shell: Rscript {0}
+
+      - name: List virtual environment content
+        run: |
+          dput(basilisk::listPackages(basilisk::obtainEnvironmentPath(sketchR:::universalenv))[, "full"])
         shell: Rscript {0}
 
       - name: Deploy
