@@ -215,6 +215,7 @@ universalenv <- BasiliskEnvironment(
     envname = "universal", pkgname = "sketchR",
     packages = .sketchR_dependencies,
     channels = c("bioconda", "conda-forge"),
-    pip = c("fbpca==1.0", "geosketch==1.2", "scsampler==1.0.2")
+    pip = c("fbpca==1.0", "geosketch==1.2", "scsampler==1.0.2",
+            "python==3.12.10")
 )
 
