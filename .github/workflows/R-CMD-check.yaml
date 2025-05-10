@@ -119,6 +119,12 @@ jobs:
           remotes::install_cran('rcmdcheck', Ncpu = 2L)
         shell: Rscript {0}
 
+      - name: Install development version of basilisk and basilisk.utils
+        run: |
+          BiocManager::install("Bioconductor/basilisk", ref = "devel")
+          BiocManager::install("Bioconductor/basilisk.utils", ref = "overhaul")
+        shell: Rscript {0}
+
       - name: Session info
         run: |
           options(width = 100)
@@ -129,12 +135,6 @@ jobs:
       - name: Check DYLD_FALLBACK_LIBRARY_PATH
         if: runner.os == 'macOS'
         run: echo $DYLD_FALLBACK_LIBRARY_PATH
-
-      - name: Install development version of basilisk and basilisk.utils
-        run: |
-          BiocManager::install("LTLA/basilisk", ref = "venv")
-          BiocManager::install("Bioconductor/basilisk.utils", ref = "overhaul")
-        shell: Rscript {0}
 
       - name: Build, Install, Check
         uses: grimbough/bioc-actions/build-install-check@v1
