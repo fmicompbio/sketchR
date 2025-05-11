@@ -5,6 +5,10 @@
 ## https://github.com/csoneson/sketchR_package_list
 if (basilisk::isLinuxAarch64()) {
     .sketchR_dependencies <- c(
+        "python==3.12.10",
+        "fbpca==1.0",
+        "geosketch==1.2",
+        "scsampler==1.0.2",
         "anndata==0.11.4",
         "array_api_compat==1.11.2",
         "contourpy==1.3.2",
@@ -46,6 +50,10 @@ if (basilisk::isLinuxAarch64()) {
     )
 } else if (basilisk::isLinux()) {
     .sketchR_dependencies <- c(
+        "python==3.12.10",
+        "fbpca==1.0",
+        "geosketch==1.2",
+        "scsampler==1.0.2",
         "anndata==0.11.4",
         "array_api_compat==1.11.2",
         "contourpy==1.3.2",
@@ -87,6 +95,10 @@ if (basilisk::isLinuxAarch64()) {
     )
 } else if (basilisk::isMacOSXArm()) {
     .sketchR_dependencies <- c(
+        "python==3.11.11",
+        "fbpca==1.0",
+        "geosketch==1.2",
+        "scsampler==1.0.2",
         "anndata==0.11.4",
         "array_api_compat==1.11.2",
         "contourpy==1.3.2",
@@ -96,11 +108,11 @@ if (basilisk::isLinuxAarch64()) {
         "joblib==1.5.0",
         "kiwisolver==1.4.8",
         "legacy-api-wrap==1.4.1",
-        "llvmlite==0.44.0",
+        "llvmlite==0.41.0", #0.44.0
         "matplotlib==3.10.3",
         "natsort==8.4.0",
         "networkx==3.4.2",
-        "numba==0.61.2",
+        "numba==0.58.1", #0.61.2
         "numpy==1.26.4",
         "packaging==25.0",
         "pandas==2.2.3",
@@ -128,6 +140,10 @@ if (basilisk::isLinuxAarch64()) {
     )
 } else if (basilisk::isMacOSX()) {
     .sketchR_dependencies <- c(
+        "python==3.12.10",
+        "fbpca==1.0",
+        "geosketch==1.2",
+        "scsampler==1.0.2",
         "anndata==0.11.4",
         "array_api_compat==1.11.2",
         "contourpy==1.3.2",
@@ -169,6 +185,10 @@ if (basilisk::isLinuxAarch64()) {
     )
 } else if (basilisk::isWindows()) {
     .sketchR_dependencies <- c(
+        "python==3.12.10",
+        "fbpca==1.0",
+        "geosketch==1.2",
+        "scsampler==1.0.2",
         "anndata==0.11.4",
         "array_api_compat==1.11.2",
         "colorama==0.4.6",
@@ -213,9 +233,6 @@ if (basilisk::isLinuxAarch64()) {
 
 universalenv <- BasiliskEnvironment(
     envname = "universal", pkgname = "sketchR",
-    packages = .sketchR_dependencies,
-    channels = c("bioconda", "conda-forge"),
-    pip = c("fbpca==1.0", "geosketch==1.2", "scsampler==1.0.2",
-            "python==3.12.10")
+    packages = .sketchR_dependencies
 )
 
