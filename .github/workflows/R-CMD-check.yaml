@@ -119,12 +119,6 @@ jobs:
           remotes::install_cran('rcmdcheck', Ncpu = 2L)
         shell: Rscript {0}
 
-      - name: Install development version of basilisk and basilisk.utils
-        run: |
-          BiocManager::install("Bioconductor/basilisk", ref = "devel")
-          BiocManager::install("Bioconductor/basilisk.utils", ref = "overhaul")
-        shell: Rscript {0}
-
       - name: Session info
         run: |
           options(width = 100)
