@@ -30,6 +30,8 @@ jobs:
         - { os: macos-14, bioc: 'devel'}
         - { os: windows-latest, bioc: 'devel'}
         - { os: ubuntu-latest, bioc: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+        - { os: macos-13, bioc: 'devel'}
+        - { os: ubuntu-24.04-arm, bioc: 'devel'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -37,6 +39,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      cache-version: v1
       #BASILISK_MINICONDA_VERSION: ${{ matrix.config.miniconda }}
 
     steps:
@@ -72,14 +75,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-
+          key: ${{ env.cache-version }}-${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ env.cache-version }}-${{ matrix.config.os }}-bioc-${{ matrix.config.bioc }}-
 
       - name: Update apt-get
         if: runner.os == 'Linux'
         run: sudo apt-get update
 
-      - name: Install system dependencis (Linux)
+      - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -153,6 +156,11 @@ jobs:
         run: |
           install.packages("covr")
           covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")
+        shell: Rscript {0}
+
+      - name: List virtual environment content
+        run: |
+          dput(basilisk::listPackages(basilisk::obtainEnvironmentPath(sketchR:::universalenv))[, "full"])
         shell: Rscript {0}
 
       - name: Deploy
