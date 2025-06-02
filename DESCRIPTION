@@ -40,7 +40,11 @@ Suggests:
     beachmat.hdf5,
     BiocStyle,
     BiocManager,
-    SingleCellExperiment
+    SingleCellExperiment,
+    snifter,
+    uwot,
+    bluster,
+    class
 URL: https://github.com/fmicompbio/sketchR
 BugReports: https://github.com/fmicompbio/sketchR/issues
 RoxygenNote: 7.3.2
