@@ -39,7 +39,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      cache-version: v1
+      cache-version: v2
       #BASILISK_MINICONDA_VERSION: ${{ matrix.config.miniconda }}
 
     steps:
