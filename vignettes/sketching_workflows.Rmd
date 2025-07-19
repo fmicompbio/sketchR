@@ -39,6 +39,7 @@ suppressPackageStartupMessages({
     library(scran)
     library(scater)
     library(SingleR)
+    library(celldex)
     library(cowplot)
     library(SummarizedExperiment)
     library(SingleCellExperiment)
@@ -53,29 +54,46 @@ suppressPackageStartupMessages({
 We will use the PBMC3k data set from the `r Biocpkg("TENxPBMCData")` 
 Bioconductor package for illustration. The chunk below prepares the data set
 by calculating log-transformed normalized counts, finding highly variable 
-genes and performing principal component analysis.
+genes, applying principal component analysis, t-SNE and UMAP, and predicting 
+cell types based on a reference data set.
 
 ```{r process-data}
-## Load data
+# load data
 pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 
-## Set row and column names
+# set row and column names
 colnames(pbmc3k) <- paste0("Cell", seq_len(ncol(pbmc3k)))
 rownames(pbmc3k) <- uniquifyFeatureNames(
     ID = rowData(pbmc3k)$ENSEMBL_ID,
     names = rowData(pbmc3k)$Symbol_TENx
 )
 
-## Normalize and log-transform counts
+# normalize and log-transform counts
 pbmc3k <- logNormCounts(pbmc3k)
 
-## Find highly variable genes
+# find highly variable genes
 dec <- modelGeneVar(pbmc3k)
 top_hvgs <- getTopHVGs(dec, n = 2000)
 
-## Perform dimensionality reduction
+# perform dimensionality reduction
 set.seed(100)
 pbmc3k <- runPCA(pbmc3k, subset_row = top_hvgs)
+reducedDim(pbmc3k, "TSNE") <- fitsne(
+    reducedDim(pbmc3k, "PCA"), 
+    n_jobs = 2L, random_state = 123L,
+    perplexity = 30, n_components = 2L, 
+    pca = FALSE)
+reducedDim(pbmc3k, "UMAP") <- umap(
+    X = reducedDim(pbmc3k, "PCA"), 
+    n_components = 2, n_neighbors = 50,
+    pca = NULL, scale = FALSE, 
+    ret_model = TRUE, n_threads = 2L)$embedding
+
+# predict cell type labels
+ref_monaco <- MonacoImmuneData()
+pred_monaco_main <- SingleR(test = pbmc3k, ref = ref_monaco, 
+                            labels = ref_monaco$label.main)
+pbmc3k$labels_main <- pred_monaco_main$labels
 ```
 
 ## Sketch cells
@@ -102,14 +120,14 @@ top_hvgs_sketched <- getTopHVGs(dec_sketched, n = 2000)
 
 ## Principal component analysis (PCA)
 
-Here, we will illustrate how to apply PCA to the sketched cells, followed by 
-projection of all cells onto the PCA representation obtained from the 
-sketched cells. In this way, all cells are retained for further analysis, but 
+In this section, we will illustrate how to apply PCA to the sketched cells, 
+followed by projection of all cells onto the obtained principal components. 
+In this way, all cells are retained for further analysis, but 
 only the sketched ones are used to determine the principal components. 
 
 ```{r pca}
 #| fig.width: 8
-#| fig.height: 5
+#| fig.height: 4
 
 set.seed(123)
 
@@ -134,7 +152,8 @@ pca <- t(sweep(assay(pbmc3k[names(centers), ], "logcounts"), MARGIN = 1,
 stopifnot(all(rownames(pca) == colnames(pbmc3k)))
 reducedDim(pbmc3k, "PCA_sketch") <- as.matrix(pca)
 
-# check that projections of sketched cells are retained
+# check that the "re-projections" of the sketched cells are the same as the 
+# original coordinates obtained from applying PCA to the sketched cells
 # ... via correlations
 vapply(seq_len(ncol(projection)), function(i) {
     cor(projection[, i],
@@ -154,9 +173,38 @@ plot_grid(plotlist = lapply(seq_len(ncol(projection))[1:2], function(i) {
 }))
 ```
 
+For comparison, we plot the first two principal components obtained with and 
+without sketching. 
+
+```{r plot-pca}
+#| fig.width: 9
+#| fig.height: 4
+
+plot_grid(plotlist = list(
+    plotReducedDim(pbmc3k, dimred = "PCA", colour_by = "labels_main", 
+                   ncomponents = c(1, 2)) + 
+        ggtitle("PCA"),
+    plotReducedDim(pbmc3k, dimred = "PCA_sketch", colour_by = "labels_main",
+                   ncomponents = c(1, 2)) + 
+        ggtitle("PCA (sketch)")
+))
+```
+
+We also visualize the location of the sketched cells in the PCA, noting that 
+as expected, the sampling fraction is higher in regions of lower density. 
+
+```{r plot-pca-sketched}
+#| fig.width: 5
+#| fig.height: 4
+
+plotReducedDim(pbmc3k, dimred = "PCA_sketch", colour_by = "sketched",
+               ncomponents = c(1, 2))
+```
+
+
 # t-SNE
 
-Here, we illustrate how to project the full data set into a tSNE representation 
+Next, we illustrate how to pull the full data set into a tSNE representation 
 derived from the sketched cells. This workflow is also described in the 
 `r Biocpkg("snifter")` vignette. Note that, unlike for PCA, for tSNE the 
 projected coordinates of the sketched cells themselves may not be identical 
@@ -171,7 +219,7 @@ with the original embeddings of the sketched cells.
 
 ```{r tsne}
 #| fig.width: 8
-#| fig.height: 5
+#| fig.height: 4
 
 set.seed(123)
 
@@ -211,14 +259,41 @@ plot_grid(plotlist = lapply(seq_len(ncol(tsne)), function(i) {
 }))
 ```
 
+As for the PCA, we plot the t-SNE representations obtained with and 
+without sketching. 
+
+```{r plot-tsne}
+#| fig.width: 9
+#| fig.height: 4
+
+plot_grid(plotlist = list(
+    plotReducedDim(pbmc3k, dimred = "TSNE", colour_by = "labels_main", 
+                   ncomponents = c(1, 2)) + 
+        ggtitle("t-SNE"),
+    plotReducedDim(pbmc3k, dimred = "TSNE_sketch", colour_by = "labels_main",
+                   ncomponents = c(1, 2)) + 
+        ggtitle("t-SNE (sketch)")
+))
+```
+
+We also visualize the location of the sketched cells in the t-SNE. 
+
+```{r plot-tsne-sketched}
+#| fig.width: 5
+#| fig.height: 4
+
+plotReducedDim(pbmc3k, dimred = "TSNE_sketch", colour_by = "sketched",
+               ncomponents = c(1, 2))
+```
+
 # UMAP
 
-Similarly to tSNE, we can also project new data into an existing UMAP 
+Similarly to t-SNE, we can also project new data into an existing UMAP 
 embedding, using the `r CRANpkg("uwot")` package. 
 
 ```{r umap}
 #| fig.width: 8
-#| fig.height: 5
+#| fig.height: 4
 
 set.seed(123)
 
@@ -255,6 +330,33 @@ plot_grid(plotlist = lapply(seq_len(ncol(umap$embedding)), function(i) {
         labs(title = paste0("UMAP dimension ", i)) + 
         theme_bw()
 }))
+```
+
+As before, we plot the UMAP representations obtained with and 
+without sketching. 
+
+```{r plot-umap}
+#| fig.width: 9
+#| fig.height: 4
+
+plot_grid(plotlist = list(
+    plotReducedDim(pbmc3k, dimred = "UMAP", colour_by = "labels_main", 
+                   ncomponents = c(1, 2)) + 
+        ggtitle("UMAP"),
+    plotReducedDim(pbmc3k, dimred = "UMAP_sketch", colour_by = "labels_main",
+                   ncomponents = c(1, 2)) + 
+        ggtitle("UMAP (sketch)")
+))
+```
+
+We also visualize the location of the sketched cells in the UMAP. 
+
+```{r plot-umap-sketched}
+#| fig.width: 5
+#| fig.height: 4
+
+plotReducedDim(pbmc3k, dimred = "UMAP_sketch", colour_by = "sketched",
+               ncomponents = c(1, 2))
 ```
 
 # Clustering
