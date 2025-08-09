@@ -142,14 +142,13 @@ Similarly, the `scsampler()` function calls the `scSampler`
 perform subsampling. 
 
 To illustrate the result of the subsampling, we plot the tSNE 
-representation of the original data as well as the two subsets (using the 
+representation of the original data as well as the subset (using the 
 tSNE coordinates derived from the full dataset).
 
-```{r plot-tsne, fig.width = 10, fig.height = 8}
+```{r plot-tsne, fig.width = 10, fig.height = 4}
 plot_grid(
     plotTSNE(pbmc3k, colour_by = "labels_main"),
-    plotTSNE(pbmc3k[, idx800gs], colour_by = "labels_main"),
-    plotTSNE(pbmc3k[, idx800scs], colour_by = "labels_main")
+    plotTSNE(pbmc3k[, idx800gs], colour_by = "labels_main")
 )
 ```
 
