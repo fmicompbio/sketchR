@@ -4,6 +4,8 @@ xs <- methods::as(xd, "dgCMatrix")
 n <- 10
 
 test_that("scsampler works", {
+    skip_on_os(os = "mac", arch = "aarch64")
+
     ## ------------------------------------------------------------------------- ##
     ## Mis-specified arguments
     ## ------------------------------------------------------------------------- ##
@@ -63,6 +65,8 @@ test_that("scsampler works", {
 })
 
 test_that("getScSamplerNames works", {
+    skip_on_os(os = "mac", arch = "aarch64")
+
     ## ------------------------------------------------------------------------- ##
     ## Checks, getScSamplerNames
     ## ------------------------------------------------------------------------- ##
@@ -71,3 +75,29 @@ test_that("getScSamplerNames works", {
     expect_type(nms, "character")
     expect_true("scsampler" %in% nms)
 })
+
+test_that("hausdorffDistPlot works also with scsampler", {
+    skip_on_os(os = "mac", arch = "aarch64")
+
+    m1 <- matrix(stats::rnorm(150), nrow = 15)
+
+    set.seed(1)
+    df1 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
+    expect_s3_class(df1, "ggplot")
+    df1 <- df1$data
+    expect_s3_class(df1, "data.frame")
+    expect_named(df1, c("method", "frac", "mean", "se", "low", "high"))
+    expect_equal(nrow(df1), 6)
+
+    set.seed(1)
+    df2 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
+    expect_s3_class(df2, "ggplot")
+    df2 <- df2$data
+    expect_equal(df1, df2)
+
+    set.seed(1)
+    df4 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2,
+                             extraArgs = list(geosketch = list(seed = 123)))
+    expect_s3_class(df4, "ggplot")
+})
+

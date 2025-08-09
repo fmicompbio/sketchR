@@ -26,37 +26,38 @@ test_that("Hausdorff diagnostic plot works", {
                                    methods = "error"),
                  "All values in 'methods'")
     expect_error(hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 5,
-                                   methods = c("geosketch", "scsampler"),
+                                   methods = c("geosketch"),
                                    extraArgs = 1),
                  "of class 'list'")
     expect_error(hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 5,
-                                   methods = c("geosketch", "scsampler"),
+                                   methods = c("geosketch"),
                                    extraArgs = list(seed = 1)),
                  "All values in 'namesextraArgs'")
     expect_error(hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 5,
-                                   methods = c("geosketch", "scsampler"),
+                                   methods = c("geosketch"),
                                    extraArgs = list(geosketch = 1)),
                  "of class 'list'")
     expect_error(hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 5,
-                                   methods = c("geosketch", "scsampler"),
+                                   methods = c("geosketch"),
                                    extraArgs = list(geosketch = c(seed = 1))),
                  "of class 'list'")
     expect_error(hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 5,
-                                   methods = c("geosketch", "scsampler"),
-                                   extraArgs = list(geosketch = list(seed = 1),
-                                                    scsampler = c(seed = 1))),
+                                   methods = c("geosketch"),
+                                   extraArgs = list(geosketch = c(seed = 1))),
                  "of class 'list'")
 
     set.seed(1)
-    df1 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
+    df1 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2,
+                             methods = c("geosketch", "uniform"))
     expect_s3_class(df1, "ggplot")
     df1 <- df1$data
     expect_s3_class(df1, "data.frame")
     expect_named(df1, c("method", "frac", "mean", "se", "low", "high"))
-    expect_equal(nrow(df1), 6)
+    expect_equal(nrow(df1), 4)
 
     set.seed(1)
-    df2 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
+    df2 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2,
+                             methods = c("geosketch", "uniform"))
     expect_s3_class(df2, "ggplot")
     df2 <- df2$data
     expect_equal(df1, df2)
@@ -72,7 +73,8 @@ test_that("Hausdorff diagnostic plot works", {
                  ignore_attr = TRUE)
 
     set.seed(42)
-    df3 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2)
+    df3 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2,
+                             methods = c("geosketch", "uniform"))
     expect_s3_class(df3, "ggplot")
     df3 <- df3$data
     expect_equal(df1$frac, df3$frac)
@@ -83,8 +85,8 @@ test_that("Hausdorff diagnostic plot works", {
     ## Ignore any seed argument provided to the individual methods
     set.seed(1)
     df4 <- hausdorffDistPlot(mat = m1, Nvec = c(5, 10), Nrep = 2,
-                             extraArgs = list(geosketch = list(seed = 123),
-                                              scsampler = list(seed = 456)))
+                             methods = c("geosketch", "uniform"),
+                             extraArgs = list(geosketch = list(seed = 123)))
     expect_s3_class(df4, "ggplot")
     df4 <- df4$data
     expect_equal(df1, df4)

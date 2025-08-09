@@ -141,13 +141,6 @@ Similarly, the `scsampler()` function calls the `scSampler`
 [python package](https://github.com/SONGDONGYUAN1994/scsampler) to 
 perform subsampling. 
 
-```{r scsampler}
-idx800scs <- scsampler(reducedDim(pbmc3k, "PCA"), 
-                       N = 800, seed = 123)
-head(idx800scs)
-length(idx800scs)
-```
-
 To illustrate the result of the subsampling, we plot the tSNE 
 representation of the original data as well as the two subsets (using the 
 tSNE coordinates derived from the full dataset).
@@ -161,12 +154,11 @@ plot_grid(
 ```
 
 We can also illustrate the relative abundance of each cell type in the 
-full data and in the subsets, respectively. 
+full data and in the subset, respectively. 
 
 ```{r plot-abundance, fig.width = 6, fig.height = 8}
 compareCompositionPlot(colData(pbmc3k), 
-                       idx = list(geosketch = idx800gs,
-                                  scSampler = idx800scs), 
+                       idx = list(geosketch = idx800gs), 
                        column = "labels_main")
 ```
 
@@ -181,7 +173,7 @@ call).
 set.seed(123)
 hausdorffDistPlot(mat = reducedDim(pbmc3k, "PCA"), 
                   Nvec = c(400, 800, 2000),
-                  Nrep = 3, methods = c("geosketch", "scsampler", "uniform"))
+                  Nrep = 3, methods = c("geosketch", "uniform"))
 ```
 
 ## Session info
