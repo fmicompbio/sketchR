@@ -131,10 +131,14 @@ only the sketched ones are used to determine the principal components.
 
 set.seed(123)
 
+# don't scale features before PCA
+doscale <- FALSE
+
 # subset to sketched cells and run PCA, using the HVGs from the sketched subset
 pbmc3k_sketched <- pbmc3k[, pbmc3k$sketched]
 pca <- calculatePCA(pbmc3k_sketched, ncomponents = 30, 
-                    subset_row = top_hvgs_sketched)
+                    subset_row = top_hvgs_sketched, 
+                    scale = doscale)
 
 # store the PCA projection for the sketched cells as well as the weights for 
 # the HVGs and the mean value for each HVG across the sketched cells
@@ -145,8 +149,10 @@ centers <- rowMeans(assay(pbmc3k_sketched[top_hvgs_sketched, ],
 
 # center the full data set using the mean values from the sketched subset and 
 # project all cells onto the extracted principal components
-pca <- t(sweep(assay(pbmc3k[names(centers), ], "logcounts"), MARGIN = 1, 
-               STATS = centers, FUN = "-")) %*% rotation
+# note that if doscale = TRUE, we also need to calculate the standard 
+# deviations across the sketched cells and use them here
+pca <- scale(t(assay(pbmc3k[names(centers), ], "logcounts")), center = centers, 
+             scale = doscale) %*% rotation
 
 # add the PCA coordinates to pbmc3k
 stopifnot(all(rownames(pca) == colnames(pbmc3k)))
