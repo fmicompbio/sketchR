@@ -13,7 +13,9 @@ A list of names of objects exposed in the scSampler module
 Get names of scSampler functions
 }
 \examples{
-getScSamplerNames()
+if (!(Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64")) {
+    getScSamplerNames()
+}
 
 }
 \author{
