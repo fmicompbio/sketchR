@@ -60,6 +60,7 @@ hausdorffDistPlot(mat, Nvec = c(10, 25, 50),
 
 ## Provide additional arguments for geosketch
 hausdorffDistPlot(mat, Nvec = c(10, 25, 50), Nrep = 2,
+                  methods = c("geosketch", "uniform"),
                   extraArgs = list(geosketch = list(max_iter = 100)))
 
 }
