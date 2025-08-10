@@ -55,8 +55,8 @@ seed the random number generator before calling this function using
 mat <- matrix(rnorm(1000), nrow = 100)
 
 ## Generate diagnostic Hausdorff distance plot
-## (including all available methods)
-hausdorffDistPlot(mat, Nvec = c(10, 25, 50))
+hausdorffDistPlot(mat, Nvec = c(10, 25, 50),
+                  methods = c("geosketch", "uniform"))
 
 ## Provide additional arguments for geosketch
 hausdorffDistPlot(mat, Nvec = c(10, 25, 50), Nrep = 2,
