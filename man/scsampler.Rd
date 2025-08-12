@@ -32,8 +32,10 @@ This is done via the \code{basilisk} R/Bioconductor package - see the
 documentation for that package for troubleshooting.
 }
 \examples{
-x <- matrix(rnorm(500), nrow = 100)
-scsampler(mat = x, N = 10)
+if (!(Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64")) {
+    x <- matrix(rnorm(500), nrow = 100)
+    scsampler(mat = x, N = 10)
+}
 
 }
 \references{

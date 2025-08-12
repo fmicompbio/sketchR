@@ -50,11 +50,12 @@
 #' mat <- matrix(rnorm(1000), nrow = 100)
 #'
 #' ## Generate diagnostic Hausdorff distance plot
-#' ## (including all available methods)
-#' hausdorffDistPlot(mat, Nvec = c(10, 25, 50))
+#' hausdorffDistPlot(mat, Nvec = c(10, 25, 50),
+#'                   methods = c("geosketch", "uniform"))
 #'
 #' ## Provide additional arguments for geosketch
 #' hausdorffDistPlot(mat, Nvec = c(10, 25, 50), Nrep = 2,
+#'                   methods = c("geosketch", "uniform"),
 #'                   extraArgs = list(geosketch = list(max_iter = 100)))
 #'
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_point geom_line

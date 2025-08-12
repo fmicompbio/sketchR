@@ -4,7 +4,9 @@
 #' @author Charlotte Soneson
 #'
 #' @examples
-#' getScSamplerNames()
+#' if (!(Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64")) {
+#'     getScSamplerNames()
+#' }
 #'
 #' @export
 #'
@@ -39,8 +41,10 @@ getScSamplerNames <- function() {
 #'     number generator.
 #'
 #' @examples
-#' x <- matrix(rnorm(500), nrow = 100)
-#' scsampler(mat = x, N = 10)
+#' if (!(Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64")) {
+#'     x <- matrix(rnorm(500), nrow = 100)
+#'     scsampler(mat = x, N = 10)
+#' }
 #'
 #' @references
 #' Song et al (2022): scSampler: fast diversity-preserving subsampling of
