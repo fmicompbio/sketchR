@@ -1,6 +1,6 @@
 Package: sketchR
-Version: 1.5.1
-Date: 2025-05-15
+Version: 1.5.2
+Date: 2025-08-12
 Title: An R interface for python subsampling/sketching algorithms
 Authors@R: c(
     person("Charlotte", "Soneson", email = "charlottesoneson@gmail.com",

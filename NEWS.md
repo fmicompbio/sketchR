@@ -1,3 +1,7 @@
+# sketchR 1.5.2
+
+* Add vignette with workflow examples
+
 # sketchR 1.1.3
 
 * Update environment to avoid setuptools incompatibility
