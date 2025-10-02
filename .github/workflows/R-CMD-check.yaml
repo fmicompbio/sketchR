@@ -30,7 +30,7 @@ jobs:
         - { os: macos-latest, bioc: 'devel'}
         - { os: windows-latest, bioc: 'devel'}
         - { os: ubuntu-latest, bioc: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-        - { os: macos-13, bioc: 'devel'}
+        - { os: macos-15-intel, bioc: 'devel'}
         - { os: ubuntu-24.04-arm, bioc: 'devel'}
 
     env:
@@ -97,21 +97,21 @@ jobs:
           brew install openssl
 
       ## make sure that crypto is found (suggestion from https://github.com/schienstockd/cecelia)
-      - name: Install dependencies (macos-14)
-        if: matrix.config.os == 'macos-14'
-        env:
-            LIBRARY_PATH: '/opt/homebrew/lib'
-            LDFLAGS: '-L/opt/homebrew/lib'
-            CPPFLAGS: '-I/opt/homebrew/include'
-        run: |
-          local_deps <- remotes::local_package_deps(dependencies = TRUE)
-          deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
-          BiocManager::install(local_deps[local_deps %in% deps$package[deps$diff != 0]], Ncpu = 2L)
-          remotes::install_cran('rcmdcheck', Ncpu = 2L)
-        shell: Rscript {0}
+      # - name: Install dependencies (macos-14)
+      #   if: matrix.config.os == 'macos-14'
+      #   env:
+      #       LIBRARY_PATH: '/opt/homebrew/lib'
+      #       LDFLAGS: '-L/opt/homebrew/lib'
+      #       CPPFLAGS: '-I/opt/homebrew/include'
+      #   run: |
+      #     local_deps <- remotes::local_package_deps(dependencies = TRUE)
+      #     deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
+      #     BiocManager::install(local_deps[local_deps %in% deps$package[deps$diff != 0]], Ncpu = 2L)
+      #     remotes::install_cran('rcmdcheck', Ncpu = 2L)
+      #   shell: Rscript {0}
 
       - name: Install dependencies
-        if: matrix.config.os != 'macos-14'
+        # if: matrix.config.os != 'macos-14'
         run: |
           local_deps <- remotes::local_package_deps(dependencies = TRUE)
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
