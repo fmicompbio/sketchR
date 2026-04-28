@@ -1,5 +1,5 @@
 Package: sketchR
-Version: 1.8.0
+Version: 1.9.0
 Date: 2026-04-02
 Title: An R interface for python subsampling/sketching algorithms
 Authors@R: c(
