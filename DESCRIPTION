@@ -1,5 +1,5 @@
 Package: sketchR
-Version: 1.9.0
+Version: 1.9.1
 Date: 2026-04-02
 Title: An R interface for python subsampling/sketching algorithms
 Authors@R: c(
@@ -31,7 +31,6 @@ Suggests:
     testthat (>= 3.0.0),
     TENxPBMCData,
     scuttle,
-    scran,
     scater,
     SingleR,
     celldex,
@@ -44,12 +43,13 @@ Suggests:
     snifter,
     uwot,
     bluster,
-    class
+    class,
+    scrapper
 URL: https://github.com/fmicompbio/sketchR
 BugReports: https://github.com/fmicompbio/sketchR/issues
-RoxygenNote: 7.3.3
 Encoding: UTF-8
 StagedInstall: no
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 biocViews: SingleCell
+Config/roxygen2/version: 8.0.0
