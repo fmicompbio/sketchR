@@ -73,8 +73,8 @@ suppressPackageStartupMessages({
     library(sketchR)
     library(TENxPBMCData)
     library(scuttle)
-    library(scran)
     library(scater)
+    library(scrapper)
     library(SingleR)
     library(celldex)
     library(cowplot)
@@ -102,16 +102,16 @@ rownames(pbmc3k) <- uniquifyFeatureNames(
 )
 
 ## Normalize and log-transform counts
-pbmc3k <- logNormCounts(pbmc3k)
+pbmc3k <- normalizeRnaCounts.se(pbmc3k, size.factors = NULL)
 
 ## Find highly variable genes
-dec <- modelGeneVar(pbmc3k)
-top.hvgs <- getTopHVGs(dec, n = 2000)
+res <- modelGeneVariances(assay(pbmc3k, "logcounts"))
+top_hvgs <- chooseHighlyVariableGenes(res$statistics$residuals, top = 2000)
 
 ## Perform dimensionality reduction
 set.seed(100)
-pbmc3k <- runPCA(pbmc3k, subset_row = top.hvgs)
-pbmc3k <- runTSNE(pbmc3k, dimred = "PCA")
+pbmc3k <- runPca.se(pbmc3k, features = top_hvgs, number = 30)
+pbmc3k <- runTsne.se(pbmc3k, reddim.type = "PCA")
 
 ## Predict cell type labels
 ref_monaco <- MonacoImmuneData()
