@@ -30,7 +30,7 @@
 #' compareCompositionPlot(df, idx, "celltype")
 #'
 #' @importFrom ggplot2 ggplot aes geom_bar theme_bw theme facet_wrap
-#'     element_text geom_text
+#' @importFrom ggplot2 element_text geom_text
 #' @importFrom dplyr mutate group_by ungroup %>% select
 #' @importFrom rlang .data
 #' @importFrom scales percent

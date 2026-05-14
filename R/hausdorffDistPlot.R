@@ -59,7 +59,7 @@
 #'                   extraArgs = list(geosketch = list(max_iter = 100)))
 #'
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_point geom_line
-#'     theme_bw scale_x_continuous labs theme element_text
+#' @importFrom ggplot2 theme_bw scale_x_continuous labs theme element_text
 #' @importFrom dplyr %>% group_by summarize
 #' @importFrom stats runif
 #'
