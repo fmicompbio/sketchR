@@ -39,7 +39,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      cache-version: v2
+      cache-version: v3
       #BASILISK_MINICONDA_VERSION: ${{ matrix.config.miniconda }}
 
     steps:
@@ -94,7 +94,17 @@ jobs:
         run: |
           brew install harfbuzz
           brew install fribidi
-          brew install openssl
+          brew install openssl@3
+          mkdir -p ~/.R
+          echo "LDFLAGS += -L$(brew --prefix openssl@3)/lib" >> ~/.R/Makevars
+          echo "CPPFLAGS += -I$(brew --prefix openssl@3)/include" >> ~/.R/Makevars
+
+      - name: Fix GCC 14 missing algorithm header on Windows
+        shell: bash
+        if: runner.os == 'Windows'
+        run: |
+          mkdir -p ~/.R
+          echo "PKG_CXXFLAGS += -include algorithm" >> ~/.R/Makevars.win
 
       ## make sure that crypto is found (suggestion from https://github.com/schienstockd/cecelia)
       # - name: Install dependencies (macos-14)
